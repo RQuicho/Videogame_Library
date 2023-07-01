@@ -2,7 +2,7 @@ from flask import Flask, redirect, request, render_template, session, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import ItegrityError
 
-from models import db, connect_db, 
+from models import db, connect_db, User, Favorite, Game, Genre, Platform, Store, Developer, Publisher, Creator
 from forms import
 
 app = Flask(__name__)
