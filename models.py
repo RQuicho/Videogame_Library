@@ -17,6 +17,7 @@ class User(db.Model):
     username = db.Column(db.Text, nullable=False, unique=True)
     password = db.Column(db.Text, nullable=False)
     email = db.Column(db.Text, nullable=False, unique=True)
+    # possibly add a user image later
     favorite_id = db.Column(db.Integer, db.ForeignKey('favorites.id', ondelete='cascade'))
     game_id = db.Column(db.Integer, db.ForeignKey('games.id', ondelete='cascade'))
 
@@ -38,7 +39,7 @@ class User(db.Model):
 
     db.session.add(user)
     return user
-    
+
 
     @classmethod
     def authenticate(cls, username, password):
