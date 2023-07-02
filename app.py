@@ -103,13 +103,16 @@ def show_games():
     """Show all games"""
 
     response = requests.get(f'https://api.rawg.io/api/games?key={api_key}')
+    response2 = requests.get(f'https://api.rawg.io/api/games?key={api_key}&page=2')
 
-    if response.status_code == 200:
+    if response.status_code == 200 and response2.status_code == 200:
         data = response.json()
-        return render_template('show_all_games.html', response=data)
+        data2 = response2.json()
+        return render_template('show_all_games.html', response=data, response2=data2)
     else:
         return "Error: Failed to retrieve data from the API"
-    
+
+    # 'next': 'https://api.rawg.io/api/games?key=25160d19f0744f488c544b98e663fd62&page=2', 'previous': None
 
     # https://api.rawg.io/api/games?key=25160d19f0744f488c544b98e663fd62
 
@@ -118,3 +121,4 @@ def show_games():
 # response = requests.get(f'https://api.exchangerate.host/convert?from={first_curr}&to={second_curr}&amount={amount}&places=2')
 # https://api.rawg.io/api/creators/{id}
 # https://api.rawg.io/api/creators
+

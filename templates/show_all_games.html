@@ -2,32 +2,50 @@
 
 {% block content %}
 
-<!-- {% for game in response %}
 
-<p>Game Title: {{response.results.name}}</p>
-<p>Genre: {{response.results.genre}}</p>
+<!-- {{response}} -->
+<!-- {{response2}} -->
 
-{% endfor %} -->
+{% for game in response.results %}
+<p>Game Title: {{game.name}}</p>
 
-{{response}}
+<p>Genre: 
+  {% for genre in game.genres %}
+    {{genre.name}}
+  {% endfor %}
+</p>
 
-<!-- <p>Game Title: {{response.results[0].name}}</p>
-<p>Genre: {{response.results[0].genres[0].name}}</p>
-<p>Developer: {{response.results[0].developers[0].developer.name|default('N/A')}}</p>
 <p>Platforms: 
-    {{response.results[0].platforms[0].platform.name}}, 
-    {{response.results[0].platforms[1].platform.name}}, 
-    {{response.results[0].platforms[2].platform.name}}, 
-    {{response.results[0].platforms[3].platform.name}}, 
-    {{response.results[0].platforms[4].platform.name}}, 
-    {{response.results[0].platforms[5].platform.name}}, 
-    {{response.results[0].platforms[6].platform.name}}
-</p> -->
+  {% for platform in game.platforms %}
+    {{platform.platform.name}}
+  {% endfor %}
+</p>
+{% endfor %}
+
+{% if response.next %}
+  <!-- {% for game in response2.results %}
+  <p>Game Title: {{game.name}}</p>
+
+  <p>Genre: 
+    {% for genre in game.genres %}
+      {{genre.name}}
+    {% endfor %}
+  </p>
+
+  <p>Platforms: 
+    {% for platform in game.platforms %}
+      {{platform.platform.name}}
+    {% endfor %}
+  </p>
+  {% endfor %} -->
+
+  <a href="{{response.next}}">Next</a>
+
+{% endif %}
+<!-- <p>Developer: {{response2.results[0].name}}</p> -->
 
 
-<!-- {% for game in response %}
-
-<div class="card" style="width: 18rem;">
+<!-- <div class="card" style="width: 18rem;">
     <img src="..." class="card-img-top" alt="...">
     <div class="card-body">
       <h5 class="card-title">Card title</h5>
@@ -42,9 +60,8 @@
       <a href="#" class="card-link">Card link</a>
       <a href="#" class="card-link">Another link</a>
     </div>
-  </div>
+  </div> -->
 
-{% endfor %} -->
 
 
 {% endblock %}
