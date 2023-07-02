@@ -8,12 +8,16 @@
 </head>
 <body>
 
-  <nav class="navbar navbar-expand">
+  <nav class="navbar navbar-expand bg-dark border-bottom border-bottom-dark" data-bs-theme="dark"">
     <div class="container-fluid">
       <div class="navbar-header">
         <a href="/" class="navbar-brand">VL</a>
       </div>
       <ul class="nav navbar-nav navbar-right">
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
         {% if not g.user %}
         <li><a href="/signup">Sign up</a></li>
         <li><a href="/login">Log in</a></li>
@@ -32,7 +36,7 @@
   
     {% block content %}
     {% endblock %}
-    
+
   </div>
 
 

@@ -2,7 +2,49 @@
 
 {% block content %}
 
+<!-- {% for game in response %}
 
+<p>Game Title: {{response.results.name}}</p>
+<p>Genre: {{response.results.genre}}</p>
+
+{% endfor %} -->
+
+{{response}}
+
+<!-- <p>Game Title: {{response.results[0].name}}</p>
+<p>Genre: {{response.results[0].genres[0].name}}</p>
+<p>Developer: {{response.results[0].developers[0].developer.name|default('N/A')}}</p>
+<p>Platforms: 
+    {{response.results[0].platforms[0].platform.name}}, 
+    {{response.results[0].platforms[1].platform.name}}, 
+    {{response.results[0].platforms[2].platform.name}}, 
+    {{response.results[0].platforms[3].platform.name}}, 
+    {{response.results[0].platforms[4].platform.name}}, 
+    {{response.results[0].platforms[5].platform.name}}, 
+    {{response.results[0].platforms[6].platform.name}}
+</p> -->
+
+
+<!-- {% for game in response %}
+
+<div class="card" style="width: 18rem;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">An item</li>
+      <li class="list-group-item">A second item</li>
+      <li class="list-group-item">A third item</li>
+    </ul>
+    <div class="card-body">
+      <a href="#" class="card-link">Card link</a>
+      <a href="#" class="card-link">Another link</a>
+    </div>
+  </div>
+
+{% endfor %} -->
 
 
 {% endblock %}

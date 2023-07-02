@@ -1,9 +1,10 @@
 from flask import Flask, redirect, request, render_template, session, flash, g
+import requests
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
 from models import db, connect_db, User, Favorite, Game, Genre, Platform, Store, Developer, Publisher, Creator
-from forms import
+from forms import UserForm, LoginForm
 
 app = Flask(__name__)
 
@@ -11,6 +12,10 @@ app.config.from_object("config")
 connect_db(app)
 
 debug = DebugToolbarExtension(app)
+
+CURR_USER_KEY = 'curr_user'
+
+api_key = '25160d19f0744f488c544b98e663fd62'
 
 #############################################################################################################################
 # User signup/login/logout
@@ -97,9 +102,16 @@ def logout():
 def show_games():
     """Show all games"""
 
+    response = requests.get(f'https://api.rawg.io/api/games?key={api_key}')
+
+    if response.status_code == 200:
+        data = response.json()
+        return render_template('show_all_games.html', response=data)
+    else:
+        return "Error: Failed to retrieve data from the API"
     
 
-    # https://api.rawg.io/api/games
+    # https://api.rawg.io/api/games?key=25160d19f0744f488c544b98e663fd62
 
     
 

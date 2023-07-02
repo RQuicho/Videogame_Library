@@ -26,19 +26,19 @@ class User(db.Model):
         return f"<User #{self.id}: {self.username}, {self.email}>"
 
     @classmethod
-    def signup(cls, username, email, password)
-    """Sing up user. Hashes password adn adds user to system."""
+    def signup(cls, username, email, password):
+        """Sign up user. Hashes password adn adds user to system."""
 
-    hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
+        hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
 
-    user = User(
-        username=username,
-        email=email,
-        password=hashed_pwd
-    )
+        user = User(
+            username=username,
+            email=email,
+            password=hashed_pwd
+        )
 
-    db.session.add(user)
-    return user
+        db.session.add(user)
+        return user
 
 
     @classmethod
