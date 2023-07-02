@@ -103,12 +103,12 @@ def show_games():
     """Show all games"""
 
     response = requests.get(f'https://api.rawg.io/api/games?key={api_key}')
-    response2 = requests.get(f'https://api.rawg.io/api/games?key={api_key}&page=2')
+    # response2 = requests.get(f'https://api.rawg.io/api/games?key={api_key}&page=2')
 
-    if response.status_code == 200 and response2.status_code == 200:
+    if response.status_code == 200:
         data = response.json()
-        data2 = response2.json()
-        return render_template('show_all_games.html', response=data, response2=data2)
+        # data2 = response2.json()
+        return render_template('show_all_games.html', response=data)
     else:
         return "Error: Failed to retrieve data from the API"
 
