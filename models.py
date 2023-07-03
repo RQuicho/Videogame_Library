@@ -26,10 +26,10 @@ class User(db.Model):
         return f"<User #{self.id}: {self.username}, {self.email}>"
 
     @classmethod
-    def signup(cls, username, email, password):
+    def signup(cls, username, email, pwd):
         """Sign up user. Hashes password adn adds user to system."""
 
-        hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
+        hashed_pwd = bcrypt.generate_password_hash(pwd).decode('UTF-8')
 
         user = User(
             username=username,
@@ -42,16 +42,15 @@ class User(db.Model):
 
 
     @classmethod
-    def authenticate(cls, username, password):
-        """Find user with 'username' and 'password."""
+    def authenticate(cls, username, pwd):
+        """Validate that user exists and password is correct."""
 
-        user = cls.query.filter_by(username=username).first()
+        u = User.query.filter_by(username=username).first()
 
-        if user:
-            is_auth = bcrypt.check_password_hash(user.password, password)
-            if is_auth:
-                return user
-        return False
+        if u and bcrypt.check_password_hash(user.password, pwd):
+            return u
+        else:
+            return False
 
 
 class Favorite(db.Model):
@@ -72,13 +71,26 @@ class Game(db.Model):
     background_image = db.Column(db.Text)
     rating = db.Column(db.Integer)
     game_series_count = db.Column(db.Integer)
-    esrb_rating = db.Column(db.String, nullable=False)
+    esrb_rating = db.Column(db.String)
     genre_id = db.Column(db.Integer, db.ForeignKey('genres.id', ondelete='cascade'))
     platform_id = db.Column(db.Integer, db.ForeignKey('platforms.id', ondelete='cascade'))
     store_id = db.Column(db.Integer, db.ForeignKey('stores.id', ondelete='cascade'))
     developer_id = db.Column(db.Integer, db.ForeignKey('developers.id', ondelete='cascade'))
     publisher_id = db.Column(db.Integer, db.ForeignKey('publishers.id', ondelete='cascade'))
     creator_id = db.Column(db.Integer, db.ForeignKey('creators.id', ondelete='cascade'))
+    
+    # genres = db.relationship('Genre', secondary='relationships', backref='games')
+
+# class Relationship(db.Model):
+#     __tablename__ = 'relationships'
+
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     genre_id = db.Column(db.Integer, db.ForeignKey('genres.id', ondelete='cascade'))
+#     platform_id = db.Column(db.Integer, db.ForeignKey('platforms.id', ondelete='cascade'))
+#     store_id = db.Column(db.Integer, db.ForeignKey('stores.id', ondelete='cascade'))
+#     developer_id = db.Column(db.Integer, db.ForeignKey('developers.id', ondelete='cascade'))
+#     publisher_id = db.Column(db.Integer, db.ForeignKey('publishers.id', ondelete='cascade'))
+#     creator_id = db.Column(db.Integer, db.ForeignKey('creators.id', ondelete='cascade'))
 
 
 class Genre(db.Model):

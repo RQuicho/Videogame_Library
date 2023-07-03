@@ -2,7 +2,6 @@ from flask import Flask, redirect, request, render_template, session, flash, g
 import requests
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
-
 from models import db, connect_db, User, Favorite, Game, Genre, Platform, Store, Developer, Publisher, Creator
 from forms import UserForm, LoginForm
 
@@ -10,7 +9,6 @@ app = Flask(__name__)
 
 app.config.from_object("config")
 connect_db(app)
-
 debug = DebugToolbarExtension(app)
 
 CURR_USER_KEY = 'curr_user'
