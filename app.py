@@ -24,25 +24,30 @@ CURR_USER_KEY = 'curr_user'
 def show_games():
     """Show all games"""
 
-    response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}')
-    # response2 = requests.get(f'https://api.rawg.io/api/games?key={api_key}&page=2')
+    search = request.args.get('q')
+    # possibly include a random page at end of url to randomly show games 
+    # https://api.rawg.io/api/games?key=25160d19f0744f488c544b98e663fd62&page=2
 
+    if not search:
+        response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}')
+    else:
+        response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}&search={search}')
     if response.status_code == 200:
         data = response.json()
-        # data2 = response2.json()
         return render_template('show_all_games.html', response=data)
     else:
         return "Error: Failed to retrieve data from the API"
+        
+    
+
+    
 
     # 'next': 'https://api.rawg.io/api/games?key=25160d19f0744f488c544b98e663fd62&page=2', 'previous': None
 
     # https://api.rawg.io/api/games?key=25160d19f0744f488c544b98e663fd62
 
-    
+    # https://api.rawg.io/api/games?key=25160d19f0744f488c544b98e663fd62&search=witcher
 
-# response = requests.get(f'https://api.exchangerate.host/convert?from={first_curr}&to={second_curr}&amount={amount}&places=2')
-# https://api.rawg.io/api/creators/{id}
-# https://api.rawg.io/api/creators
 
 
 

@@ -26,7 +26,7 @@
     {% for game in response.results %}
     <div class="col">
       <div class="card">
-        <img src="{{game.background_image}}" class="card-img-top" alt="Image of game">
+        <img src="{{game.background_image}}" class="card-img-top" alt="Image of {{game.name}}">
         <div class="card-body">
           <h5 class="card-title">{{game.name}}</h5>
           <p class="card-text">Genre: 
