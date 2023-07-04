@@ -1,5 +1,5 @@
 from app import app
-from models import db, connect_db, User, Favorite, Game, Genre, Platform, Store, Developer, Publisher, Creator
+from models import db, connect_db, User, Game, Favorite, Played, Completed, Planned
 import requests
 
 api_key = '25160d19f0744f488c544b98e663fd62'
@@ -18,17 +18,9 @@ with app.app_context():
 
     # games_data = get_raw_data(f'https://api.rawg.io/api/games?key={api_key}&search=The%20Witcher%203:%20Wild%20Hunt')
 
-    u1 = User(
-        username='Link',
-        password='CookingIsFun',
-        email='link@email.com'
-    )
+    u1 = User.signup('Link', 'link@email.com', 'CookingIsFun')
 
-    u2 = User(
-        username='Zelda',
-        password='The blood moon rises',
-        email='zelda@email.com'
-    )
+    u2 = User.signup('Zelda', 'zelda@email.com', 'The blood moon rises')
 
     # g1 = Game(
     #     name = games_data['results'][0]['name'],

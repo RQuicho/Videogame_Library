@@ -2,7 +2,7 @@ from flask import Flask, redirect, request, render_template, session, flash, g
 import requests
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
-from models import db, connect_db, User, Favorite, Game, Genre, Platform, Store, Developer, Publisher, Creator
+from models import db, connect_db, User, Game, Favorite, Played, Completed, Planned
 from forms import UserForm, LoginForm
 from secrets import API_KEY
 
@@ -128,7 +128,7 @@ def logout():
 
     
 #############################################################################################################################
-# User routes
+# All Games routes
 
 @app.route('/users/<int:user_id>/games', methods=['GET', 'POST'])
 def show_user_games(user_id):
@@ -144,5 +144,39 @@ def show_user_games(user_id):
     user = User.query.get_or_404(user_id)
     return render_template('user_details.html', user=user)
 
+
+
+#############################################################################################################################
+# Favorites routes
+
+
+
+
+
+
+
+
+#############################################################################################################################
+# Played routes
+
+
+
+
+
+
+
+
+#############################################################################################################################
+# Completed routes
+
+
+
+
+
+
+
+
+#############################################################################################################################
+# Planned routes
 
 

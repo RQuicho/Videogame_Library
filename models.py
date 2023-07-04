@@ -18,9 +18,8 @@ class User(db.Model):
     password = db.Column(db.Text, nullable=False)
     email = db.Column(db.Text, nullable=False, unique=True)
     # possibly add a user image later
-    favorite_id = db.Column(db.Integer, db.ForeignKey('favorites.id', ondelete='cascade'))
-    game_id = db.Column(db.Integer, db.ForeignKey('games.id', ondelete='cascade'))
 
+    # game = db.relationship('Game', backref='users')
 
     def __repr__(self):
         return f"<User #{self.id}: {self.username}, {self.email}>"
@@ -40,7 +39,6 @@ class User(db.Model):
         db.session.add(user)
         return user
 
-
     @classmethod
     def authenticate(cls, username, pwd):
         """Validate that user exists and password is correct."""
@@ -51,13 +49,6 @@ class User(db.Model):
             return u
         else:
             return False
-
-
-class Favorite(db.Model):
-    __tablename__ = 'favorites'
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    game_id = db.Column(db.Integer, db.ForeignKey('games.id', ondelete='cascade'))
 
 
 class Game(db.Model):
@@ -72,73 +63,75 @@ class Game(db.Model):
     rating = db.Column(db.Integer)
     game_series_count = db.Column(db.Integer)
     esrb_rating = db.Column(db.String)
-    genre_id = db.Column(db.Integer, db.ForeignKey('genres.id', ondelete='cascade'))
-    platform_id = db.Column(db.Integer, db.ForeignKey('platforms.id', ondelete='cascade'))
-    store_id = db.Column(db.Integer, db.ForeignKey('stores.id', ondelete='cascade'))
-    developer_id = db.Column(db.Integer, db.ForeignKey('developers.id', ondelete='cascade'))
-    publisher_id = db.Column(db.Integer, db.ForeignKey('publishers.id', ondelete='cascade'))
-    creator_id = db.Column(db.Integer, db.ForeignKey('creators.id', ondelete='cascade'))
-    
-    # genres = db.relationship('Genre', secondary='relationships', backref='games')
-
-# class Relationship(db.Model):
-#     __tablename__ = 'relationships'
-
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     genre_id = db.Column(db.Integer, db.ForeignKey('genres.id', ondelete='cascade'))
-#     platform_id = db.Column(db.Integer, db.ForeignKey('platforms.id', ondelete='cascade'))
-#     store_id = db.Column(db.Integer, db.ForeignKey('stores.id', ondelete='cascade'))
-#     developer_id = db.Column(db.Integer, db.ForeignKey('developers.id', ondelete='cascade'))
-#     publisher_id = db.Column(db.Integer, db.ForeignKey('publishers.id', ondelete='cascade'))
-#     creator_id = db.Column(db.Integer, db.ForeignKey('creators.id', ondelete='cascade'))
+    genre = db.Column(db.Text)
+    platform = db.Column(db.Text)
+    store = db.Column(db.Text)
+    developer = db.Column(db.Text)
+    publisher = db.Column(db.Text)
+    creator = db.Column(db.Text)
+    favorite_id = db.Column(db.Integer, db.ForeignKey('favorites.id', ondelete='cascade'))
+    played_id = db.Column(db.Integer, db.ForeignKey('played.id', ondelete='cascade'))
+    completed_id = db.Column(db.Integer, db.ForeignKey('completed.id', ondelete='cascade'))
+    planned_id = db.Column(db.Integer, db.ForeignKey('planned.id', ondelete='cascade'))
 
 
-class Genre(db.Model):
-    __tablename__ = 'genres'
+class Favorite(db.Model):
+    __tablename__ = 'favorites'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
-    description = db.Column(db.Text)
+    genre = db.Column(db.String)
+    platform = db.Column(db.String)
+    released = db.Column(db.String)
+    esrb_rating = db.Column(db.String)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'))
+    game_id = db.Column(db.Integer, db.ForeignKey('games.id', ondelete='cascade'))
+
+    # game = db.relationship('Game', backref='favorites')
 
 
-class Platform(db.Model):
-    __tablename__ = 'platforms'
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String, nullable=False)
-    image_background = db.Column(db.Text)
-
-
-class Store(db.Model):
-    __tablename__ = 'stores'
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String, nullable=False)
-
-
-class Developer(db.Model):
-    __tablename__ = 'developers'
+class Played(db.Model):
+    __tablename__ = 'played'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
-    description = db.Column(db.Text)
-    games_count = db.Column(db.Integer)
+    genre = db.Column(db.String)
+    platform = db.Column(db.String)
+    released = db.Column(db.String)
+    esrb_rating = db.Column(db.String)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'))
+    game_id = db.Column(db.Integer, db.ForeignKey('games.id', ondelete='cascade'))
+
+    # game = db.relationship('Game', backref='played')
 
 
-class Publisher(db.Model):
-    __tablename__ = 'publishers'
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String, nullable=False)
-    description = db.Column(db.Text)
-    image_background = db.Column(db.Text)
-
-
-class Creator(db.Model):
-    __tablename__ = 'creators'
+class Completed(db.Model):
+    __tablename__ = 'completed'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
-    description = db.Column(db.Text)
+    genre = db.Column(db.String)
+    platform = db.Column(db.String)
+    released = db.Column(db.String)
+    esrb_rating = db.Column(db.String)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'))
+    game_id = db.Column(db.Integer, db.ForeignKey('games.id', ondelete='cascade'))
+
+    # game = db.relationship('Game', backref='completed')
+
+
+class Planned(db.Model):
+    __tablename__ = 'planned'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String, nullable=False)
+    genre = db.Column(db.String)
+    platform = db.Column(db.String)
+    released = db.Column(db.String)
+    esrb_rating = db.Column(db.String)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'))
+    game_id = db.Column(db.Integer, db.ForeignKey('games.id', ondelete='cascade'))
+
+    # game = db.relationship('Game', backref='planned')
 
 

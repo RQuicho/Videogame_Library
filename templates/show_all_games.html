@@ -3,25 +3,6 @@
 {% block content %}
 
 
-<!-- {{response}} -->
-<!-- {{response2}} -->
-
-<!-- {% for game in response.results %}
-<p>Game Title: {{game.name}}</p>
-
-<p>Genre: 
-  {% for genre in game.genres %}
-    {{genre.name}}
-  {% endfor %}
-</p>
-
-<p>Platforms: 
-  {% for platform in game.platforms %}
-    {{platform.platform.name}}
-  {% endfor %}
-</p>
-{% endfor %} -->
-
   <div class="row row-cols-1 row-cols-md-2 g-4">
     {% for game in response.results %}
     <div class="col">
