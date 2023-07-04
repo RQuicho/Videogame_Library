@@ -4,6 +4,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from models import db, connect_db, User, Favorite, Game, Genre, Platform, Store, Developer, Publisher, Creator
 from forms import UserForm, LoginForm
+from secrets import API_KEY
 
 app = Flask(__name__)
 
@@ -13,7 +14,7 @@ debug = DebugToolbarExtension(app)
 
 CURR_USER_KEY = 'curr_user'
 
-api_key = '25160d19f0744f488c544b98e663fd62'
+
 
 #############################################################################################################################
 # Home Page
@@ -23,7 +24,7 @@ api_key = '25160d19f0744f488c544b98e663fd62'
 def show_games():
     """Show all games"""
 
-    response = requests.get(f'https://api.rawg.io/api/games?key={api_key}')
+    response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}')
     # response2 = requests.get(f'https://api.rawg.io/api/games?key={api_key}&page=2')
 
     if response.status_code == 200:
@@ -124,7 +125,19 @@ def logout():
 #############################################################################################################################
 # User routes
 
+@app.route('/users/<int:user_id>/games', methods=['GET', 'POST'])
+def show_user_games(user_id):
+    """Show all games in user's library."""
 
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect('/')
+    if user_id != g.user.id:
+        flash("Unauthorized user ID.", "danger")
+        return redirect('/')
+    user_id = g.user.id
+    user = User.query.get_or_404(user_id)
+    return render_template('user_details.html', user=user)
 
 
 

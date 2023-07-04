@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{user.username}}'s Library</h1>
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" aria-current="page" href="#">All Games</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Favorites</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Played</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Completed</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Plan to Play</a>
+    </li>
+  </ul>
+
+
+{% endblock %}
