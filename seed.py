@@ -1,8 +1,8 @@
 from app import app
 from models import db, connect_db, User, Game, Favorite, Played, Completed, Planned
 import requests
+from secrets import API_KEY
 
-api_key = '25160d19f0744f488c544b98e663fd62'
 
 def get_raw_data(url):
     response = requests.get(url)

@@ -47,8 +47,10 @@ class User(db.Model):
 
         if u and bcrypt.check_password_hash(u.password, pwd):
             return u
+        elif not u:
+            return "User not found"
         else:
-            return False
+            return "Incorrect password"
 
 
 class Game(db.Model):

@@ -3,7 +3,8 @@ import requests
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from models import db, connect_db, User, Game, Favorite, Played, Completed, Planned
-from forms import UserForm, LoginForm
+from forms import UserAddForm, UserEditForm, LoginForm
+from flask_bcrypt import Bcrypt
 from secrets import API_KEY
 
 app = Flask(__name__)
@@ -11,6 +12,8 @@ app = Flask(__name__)
 app.config.from_object("config")
 connect_db(app)
 debug = DebugToolbarExtension(app)
+
+bcrypt = Bcrypt()
 
 CURR_USER_KEY = 'curr_user'
 
@@ -81,7 +84,7 @@ def signup():
 
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
-    form = UserForm()
+    form = UserAddForm()
 
     if form.validate_on_submit():
         try:
@@ -126,6 +129,45 @@ def logout():
     flash("Successfully logged out!", "success")
     return redirect("/")
 
+
+
+#############################################################################################################################
+# User routes
+
+@app.route('/users/<int:user_id>', methods=['GET', 'POST'])
+def show_user_details(user_id):
+    """Show user details and update info."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect('/')
+    if user_id != g.user.id:
+        flash("Unauthorized user ID.", "danger")
+        return redirect('/')
+
+    user_id = g.user.id
+    user = User.query.get_or_404(user_id)
+
+    form = UserEditForm(obj=user)
+    if form.validate_on_submit():
+        if form.password.data:
+            if User.authenticate(form.username.data, form.password.data):
+                user.username = form.username.data
+                user.email = form.email.data
+                user.password = hashed_pwd = bcrypt.generate_password_hash(form.password.data).decode('UTF-8')
+                db.session.commit()
+                flash("Successfully updated profile!", "success")
+            else:
+                flash("Password Incorrect", "danger")
+        else:
+            user.username = form.username.data
+            user.email = form.email.data
+            db.session.commit()
+            flash("Successfully updated profile!", "success")
+        return redirect('/')
+    return render_template('user_details.html', user=user, form=form)
+
+
     
 #############################################################################################################################
 # All Games routes
@@ -142,14 +184,31 @@ def show_user_games(user_id):
         return redirect('/')
     user_id = g.user.id
     user = User.query.get_or_404(user_id)
-    return render_template('user_details.html', user=user)
+
+    return render_template('user_games.html', user=user)
+
+@app.route('/games/<int:game_id>', methods=['GET', 'POST'])
+def show_game_details():
+    """Shows detail of one game"""
 
 
 
 #############################################################################################################################
 # Favorites routes
 
+@app.route('/users/<int:user_id>/favorites', methods=['GET', 'POST'])
+def show_user_favorites(user_id):
+    """Show favorite games in user's library."""
 
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect('/')
+    if user_id != g.user.id:
+        flash("Unauthorized user ID.", "danger")
+        return redirect('/')
+    user_id = g.user.id
+    user = User.query.get_or_404(user_id)
+    return render_template('user_favorites.html', user=user)
 
 
 
