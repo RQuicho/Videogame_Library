@@ -62,7 +62,6 @@ class Game(db.Model):
     released = db.Column(db.Date)
     tba = db.Column(db.Boolean)
     background_image = db.Column(db.Text)
-    rating = db.Column(db.Integer)
     game_series_count = db.Column(db.Integer)
     esrb_rating = db.Column(db.String)
     genre = db.Column(db.Text)
@@ -70,7 +69,6 @@ class Game(db.Model):
     store = db.Column(db.Text)
     developer = db.Column(db.Text)
     publisher = db.Column(db.Text)
-    creator = db.Column(db.Text)
 
 
 class Category(db.Model):

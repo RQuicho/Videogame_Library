@@ -40,6 +40,32 @@ def show_games():
         return render_template('show_all_games.html', response=data)
     else:
         return "Error: Failed to retrieve data from the API"
+
+
+    # store game data in Game database
+
+    game_data = (requests.get(f'https://api.rawg.io/api/games?key={API_KEY}')).json()
+    
+    for game in game_data.results:
+        game_id = game.id
+        game_details = (requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}')).json()
+
+        new_game = Game(
+                name = game.name,
+                description = game_details.description,
+                released = game.released,
+                tba = game.tba,
+                background_image = game.background_image,
+                game_series_count = game_details.game_series_count,
+                esrb_rating = game.esrb_rating.name,
+                genre = [genre.name for genre in game.genres],
+                platform = [platform.platform.name for platform in game.platforms],
+                store = [store.store.name for store in game.stores],
+                developer = game_details.developers[0].name,
+                publisher = game_details.publishers[0].name        
+            )
+        db.session.add(new_game)
+    db.session.commit()
         
     
 
@@ -50,6 +76,8 @@ def show_games():
     # https://api.rawg.io/api/games?key=25160d19f0744f488c544b98e663fd62
 
     # https://api.rawg.io/api/games?key=25160d19f0744f488c544b98e663fd62&search=witcher
+
+    # https://api.rawg.io/api/games/{id} (.description)
 
 
 
@@ -189,26 +217,31 @@ def show_user_games(user_id):
 
 @app.route('/users/games/<int:game_id>', methods=['POST'])
 def add_game_to_all_games(game_id):
-    """Add game to all games."""
+    """Add game to all_games."""
 
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect('/')
-    
-    user_id = g.user.id
-
-    game = Game.query.get(game_id)
-    if user_id != g.user.id:
-        flash("Unauthorized user ID.", "danger")
-        return redirect('/')
 
     
 
-    all_game = AllGames(name=name, genre=genre, platform=platform, released=released, esrb_rating=esrb_rating)
-    db.session.add(game)
-    db.sesson.commit()
-    flash("Game added to All Games.", "success")
-    return redirect('/')
+    # if not g.user:
+    #     flash("Access unauthorized.", "danger")
+    #     return redirect('/')
+    
+    # user_id = g.user.id
+
+    # game = Game.query.get(game_id)
+    # if user_id != g.user.id:
+    #     flash("Unauthorized user ID.", "danger")
+    #     return redirect('/')
+
+    
+    # all_game = AllGames(name=name, genre=genre, platform=platform, released=released, esrb_rating=esrb_rating)
+    # db.session.add(game)
+    # db.sesson.commit()
+    # flash("Game added to All Games.", "success")
+    # return redirect('/')
 
 
 @app.route('/games/<int:game_id>', methods=['GET', 'POST'])
