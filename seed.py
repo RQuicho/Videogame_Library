@@ -1,5 +1,5 @@
 from app import app
-from models import db, connect_db, User, Game, Favorite, Played, Completed, Planned
+from models import db, connect_db, User, Game, Category
 import requests
 from secrets import API_KEY
 

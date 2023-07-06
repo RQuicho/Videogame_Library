@@ -24,8 +24,23 @@
           <p class="card-text">ESRB Rating: {{game.esrb_rating.name}}</p>
         </div>
         <div class="card-body">
-          <a href="#" class="card-link">Card link</a>
-          <a href="#" class="card-link">Another link</a>
+          <!-- <form method="POST">
+            <button><a href="/users/games/{{game.id}}" class="card-link">Add to Library</a></button>
+            <a href="#" class="card-link">See Details</a>
+          </form> -->
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Add Game
+            </button>
+            <ul class="dropdown-menu" data-bs-theme="dark">
+              <li><a class="dropdown-item active" href="/">All Games</a></li>
+              <li><a class="dropdown-item" href="/">Favorites</a></li>
+              <li><a class="dropdown-item" href="/">Played</a></li>
+              <li><a class="dropdown-item" href="/">Completed</a></li>
+              <li><a class="dropdown-item" href="/">Plan to Play</a></li>
+            </ul>
+          </div>
+          <a href="#" class="card-link">See Details</a>
         </div>
       </div>
     </div>

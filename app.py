@@ -2,7 +2,7 @@ from flask import Flask, redirect, request, render_template, session, flash, g
 import requests
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
-from models import db, connect_db, User, Game, Favorite, Played, Completed, Planned
+from models import db, connect_db, User, Game, Category
 from forms import UserAddForm, UserEditForm, LoginForm
 from flask_bcrypt import Bcrypt
 from secrets import API_KEY
@@ -186,6 +186,30 @@ def show_user_games(user_id):
     user = User.query.get_or_404(user_id)
 
     return render_template('user_games.html', user=user)
+
+@app.route('/users/games/<int:game_id>', methods=['POST'])
+def add_game_to_all_games(game_id):
+    """Add game to all games."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect('/')
+    
+    user_id = g.user.id
+
+    game = Game.query.get(game_id)
+    if user_id != g.user.id:
+        flash("Unauthorized user ID.", "danger")
+        return redirect('/')
+
+    
+
+    all_game = AllGames(name=name, genre=genre, platform=platform, released=released, esrb_rating=esrb_rating)
+    db.session.add(game)
+    db.sesson.commit()
+    flash("Game added to All Games.", "success")
+    return redirect('/')
+
 
 @app.route('/games/<int:game_id>', methods=['GET', 'POST'])
 def show_game_details():
