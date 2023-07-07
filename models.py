@@ -57,6 +57,7 @@ class Game(db.Model):
     __tablename__ = 'games'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    game_id = db.Column(db.Integer, nullable=False)
     name = db.Column(db.String, nullable=False)
     description = db.Column(db.Text, nullable=False)
     released = db.Column(db.Date)
@@ -70,16 +71,18 @@ class Game(db.Model):
     developer = db.Column(db.Text)
     publisher = db.Column(db.Text)
 
+    users = db.relationship('User', backref='games')
+
 
 class Category(db.Model):
     __tablename__ = 'categories'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    all_games = db.Column(db.String)
-    favorites = db.Column(db.String)
-    played = db.Column(db.String)
-    completed = db.Column(db.String)
-    planned = db.Column(db.String)
+    all_games = db.Column(db.Integer)
+    favorites = db.Column(db.Integer)
+    played = db.Column(db.Integer)
+    completed = db.Column(db.Integer)
+    planned = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'))
 
 

@@ -17,6 +17,31 @@ bcrypt = Bcrypt()
 
 CURR_USER_KEY = 'curr_user'
 
+def add_game_to_db(game_id):
+    response = requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}') 
+    if response.status_code == 200:
+        game = response.json()
+        # game_id = game.id
+        g1 = Game(
+            game_id = game['id'],
+            name = game['name'],
+            description = game['description'],
+            released = game['released'],
+            tba = game['tba'],
+            background_image = game['background_image'],
+            game_series_count = game['game_series_count'],
+            esrb_rating = game['esrb_rating']['name'],
+            genre = [genre['name'] for genre in game['genres']],
+            platform = [platform['platform']['name'] for platform in game['platforms']],
+            store = [store['store']['name'] for store in game['stores']],
+            developer = game['developers'][0]['name'],
+            publisher = game['publishers'][0]['name']
+                           
+        )
+        db.session.add(g1)
+        db.session.commit()
+        
+
 
 
 #############################################################################################################################
@@ -196,70 +221,30 @@ def show_user_games(user_id):
 
 @app.route('/add_game/<int:game_id>', methods=['POST'])
 def add_game(game_id):
-    """Add game to Games table"""
+    """Add game to Games table and add to correct Category"""
 
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect('/')
+
+    add_game_to_db(game_id)
     
+    # connect added game to correct user and category table
     response = requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}')
-    
     if response.status_code == 200:
-        game = response.json()
-        # game_id = game.id
-        
-        g1 = Game(
-            name = game['name'],
-            description = game['description'],
-            released = game['released'],
-            tba = game['tba'],
-            background_image = game['background_image'],
-            game_series_count = game['game_series_count'],
-            esrb_rating = game['esrb_rating']['name'],
-            genre = [genre['name'] for genre in game['genres']],
-            platform = [platform['platform']['name'] for platform in game['platforms']],
-            store = [store['store']['name'] for store in game['stores']],
-            developer = game['developers'][0]['name'],
-            publisher = game['publishers'][0]['name']
-                           
+        new_game = Game.query.filter_by(game_id=game_id).first()
+        cat1 = Category(
+            all_games = new_game.game_id,
+            user_id = g.user.id
         )
-        db.session.add(g1)
+        db.session.add(cat1)
         db.session.commit()
-        flash("Game added to library", "success")
+
+        flash("Game added to All Games library", "success")
         return redirect('/')
     else:
         flash("Error: Fialed to retrieve game details from the API", "danger")
         return redirect('/')
-    
-
-
-    # store game data in Game database
-
-    # game_data = (requests.get(f'https://api.rawg.io/api/games?key={API_KEY}')).json()
-    
-    # for game in game_data.results:
-    #     game_id = game.id
-    #     game_details = (requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}')).json()
-
-    #     new_game = Game(
-    #             name = game.name,
-    #             description = game_details.description,
-    #             released = game.released,
-    #             tba = game.tba,
-    #             background_image = game.background_image,
-    #             game_series_count = game_details.game_series_count,
-    #             esrb_rating = game.esrb_rating.name,
-    #             genre = [genre.name for genre in game.genres],
-    #             platform = [platform.platform.name for platform in game.platforms],
-    #             store = [store.store.name for store in game.stores],
-    #             developer = game_details.developers[0].name,
-    #             publisher = game_details.publishers[0].name        
-    #         )
-    #     db.session.add(new_game)
-    # db.session.commit()
-
-
-
 
 
 
@@ -268,17 +253,9 @@ def add_game(game_id):
 
 @app.route('/users/<int:user_id>/favorites', methods=['GET', 'POST'])
 def show_user_favorites(user_id):
-    """Show favorite games in user's library."""
+    """Add game to Games table and add to correct Category"""
 
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect('/')
-    if user_id != g.user.id:
-        flash("Unauthorized user ID.", "danger")
-        return redirect('/')
-    user_id = g.user.id
-    user = User.query.get_or_404(user_id)
-    return render_template('user_favorites.html', user=user)
+    
 
 
 
