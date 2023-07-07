@@ -23,7 +23,7 @@
         <li><a href="/login">Log in</a></li>
         {% else %}
         <li><a href="/users/{{g.user.id}}">{{g.user.username}}</a></li>
-        <li><a href="/users/{{g.user.id}}/games">My Library</a></li>
+        <li><a href="/users/{{g.user.id}}/all_games">My Library</a></li>
         <li><a href="/logout">Log out</a></li>
         {% endif %}
       </ul>

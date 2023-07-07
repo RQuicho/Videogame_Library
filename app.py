@@ -23,7 +23,7 @@ CURR_USER_KEY = 'curr_user'
 # Home Page
 
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET', 'POST'])
 def show_games():
     """Show all games"""
 
@@ -41,35 +41,7 @@ def show_games():
     else:
         return "Error: Failed to retrieve data from the API"
 
-
-    # store game data in Game database
-
-    game_data = (requests.get(f'https://api.rawg.io/api/games?key={API_KEY}')).json()
-    
-    for game in game_data.results:
-        game_id = game.id
-        game_details = (requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}')).json()
-
-        new_game = Game(
-                name = game.name,
-                description = game_details.description,
-                released = game.released,
-                tba = game.tba,
-                background_image = game.background_image,
-                game_series_count = game_details.game_series_count,
-                esrb_rating = game.esrb_rating.name,
-                genre = [genre.name for genre in game.genres],
-                platform = [platform.platform.name for platform in game.platforms],
-                store = [store.store.name for store in game.stores],
-                developer = game_details.developers[0].name,
-                publisher = game_details.publishers[0].name        
-            )
-        db.session.add(new_game)
-    db.session.commit()
-        
-    
-
-    
+       
 
     # 'next': 'https://api.rawg.io/api/games?key=25160d19f0744f488c544b98e663fd62&page=2', 'previous': None
 
@@ -78,6 +50,12 @@ def show_games():
     # https://api.rawg.io/api/games?key=25160d19f0744f488c544b98e663fd62&search=witcher
 
     # https://api.rawg.io/api/games/{id} (.description)
+
+
+    @app.route('/games/<int:game_id>', methods=['GET'])
+    def show_game_details():
+        """Shows detail of one game"""
+
 
 
 
@@ -198,11 +176,11 @@ def show_user_details(user_id):
 
     
 #############################################################################################################################
-# All Games routes
+# All_Games routes
 
-@app.route('/users/<int:user_id>/games', methods=['GET', 'POST'])
+@app.route('/users/<int:user_id>/all_games', methods=['GET', 'POST'])
 def show_user_games(user_id):
-    """Show all games in user's library."""
+    """Show user's all_games library."""
 
     if not g.user:
         flash("Access unauthorized.", "danger")
@@ -215,38 +193,73 @@ def show_user_games(user_id):
 
     return render_template('user_games.html', user=user)
 
-@app.route('/users/games/<int:game_id>', methods=['POST'])
-def add_game_to_all_games(game_id):
-    """Add game to all_games."""
+
+@app.route('/add_game/<int:game_id>', methods=['POST'])
+def add_game(game_id):
+    """Add game to Games table"""
 
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect('/')
-
+    
+    response = requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}')
+    
+    if response.status_code == 200:
+        game = response.json()
+        # game_id = game.id
+        
+        g1 = Game(
+            name = game['name'],
+            description = game['description'],
+            released = game['released'],
+            tba = game['tba'],
+            background_image = game['background_image'],
+            game_series_count = game['game_series_count'],
+            esrb_rating = game['esrb_rating']['name'],
+            genre = [genre['name'] for genre in game['genres']],
+            platform = [platform['platform']['name'] for platform in game['platforms']],
+            store = [store['store']['name'] for store in game['stores']],
+            developer = game['developers'][0]['name'],
+            publisher = game['publishers'][0]['name']
+                           
+        )
+        db.session.add(g1)
+        db.session.commit()
+        flash("Game added to library", "success")
+        return redirect('/')
+    else:
+        flash("Error: Fialed to retrieve game details from the API", "danger")
+        return redirect('/')
     
 
-    # if not g.user:
-    #     flash("Access unauthorized.", "danger")
-    #     return redirect('/')
+
+    # store game data in Game database
+
+    # game_data = (requests.get(f'https://api.rawg.io/api/games?key={API_KEY}')).json()
     
-    # user_id = g.user.id
+    # for game in game_data.results:
+    #     game_id = game.id
+    #     game_details = (requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}')).json()
 
-    # game = Game.query.get(game_id)
-    # if user_id != g.user.id:
-    #     flash("Unauthorized user ID.", "danger")
-    #     return redirect('/')
+    #     new_game = Game(
+    #             name = game.name,
+    #             description = game_details.description,
+    #             released = game.released,
+    #             tba = game.tba,
+    #             background_image = game.background_image,
+    #             game_series_count = game_details.game_series_count,
+    #             esrb_rating = game.esrb_rating.name,
+    #             genre = [genre.name for genre in game.genres],
+    #             platform = [platform.platform.name for platform in game.platforms],
+    #             store = [store.store.name for store in game.stores],
+    #             developer = game_details.developers[0].name,
+    #             publisher = game_details.publishers[0].name        
+    #         )
+    #     db.session.add(new_game)
+    # db.session.commit()
 
-    
-    # all_game = AllGames(name=name, genre=genre, platform=platform, released=released, esrb_rating=esrb_rating)
-    # db.session.add(game)
-    # db.sesson.commit()
-    # flash("Game added to All Games.", "success")
-    # return redirect('/')
 
 
-@app.route('/games/<int:game_id>', methods=['GET', 'POST'])
-def show_game_details():
-    """Shows detail of one game"""
 
 
 
