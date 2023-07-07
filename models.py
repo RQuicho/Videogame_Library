@@ -20,6 +20,8 @@ class User(db.Model):
     # possibly add a user image later
     game_id = db.Column(db.Integer, db.ForeignKey('games.id', ondelete='cascade'))
 
+    categories = db.relationship('Category', backref='users')
+
 
     def __repr__(self):
         return f"<User #{self.id}: {self.username}, {self.email}>"
@@ -72,6 +74,7 @@ class Game(db.Model):
     publisher = db.Column(db.Text)
 
     users = db.relationship('User', backref='games')
+    
 
 
 class Category(db.Model):
@@ -85,4 +88,12 @@ class Category(db.Model):
     planned = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'))
 
+    games = db.relationship('Game', secondary='games_categories', backref='categories')
 
+
+class GameCategory(db.Model):
+    __tablename__ = 'games_categories'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    game_id = db.Column(db.Integer, db.ForeignKey('games.id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)

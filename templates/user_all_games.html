@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{user.username}}'s Library</h1>
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="/users/{{user.id}}/all_games">All Games</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/users/{{user.id}}/favorites">Favorites</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/users/{{user.id}}/played">Played</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/users/{{user.id}}/completed">Completed</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/users/{{user.id}}/planned">Plan to Play</a>
+    </li>
+  </ul>
+
+  <h1>Games go here</h1>
+
+  <!-- add if and elif when users have no games in library -->
+
+  <p>{{user.categories}}</p>
+  <p>{{user.categories[0].all_games}}</p>
+ 
+
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    {% for category in user.categories %}
+      {% if category.all_games > 0 %}
+        {% for game in category.games %}
+          <div class="col">
+            <div class="card">
+              <img src="{{game.background_image}}" class="card-img-top" alt="Image of {{game.name}}">
+              <div class="card-body">
+                <h5 class="card-title">{{game.name}}</h5>
+                <p class="card-text">Genre: 
+                  {% for genre in game.genres %}
+                    {{genre.name}} |
+                  {% endfor %}
+                </p>
+                <p class="card-text">Platforms: 
+                  {% for platform in game.platforms %}
+                    {{platform.platform.name}} |
+                  {% endfor %}
+                </p>
+                <p class="card-text">Released: {{game.released}}</p>
+                <p class="card-text">ESRB Rating: {{game.esrb_rating.name}}</p>
+              </div>
+              <div class="card-body">
+                <a href="#" class="card-link">See Details</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  </div>
+
+
+
+{% endblock %}
+

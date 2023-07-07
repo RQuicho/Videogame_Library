@@ -2,7 +2,7 @@ from flask import Flask, redirect, request, render_template, session, flash, g
 import requests
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
-from models import db, connect_db, User, Game, Category
+from models import db, connect_db, User, Game, Category, GameCategory
 from forms import UserAddForm, UserEditForm, LoginForm
 from flask_bcrypt import Bcrypt
 from secrets import API_KEY
@@ -216,7 +216,7 @@ def show_user_games(user_id):
     user_id = g.user.id
     user = User.query.get_or_404(user_id)
 
-    return render_template('user_games.html', user=user)
+    return render_template('user_all_games.html', user=user)
 
 
 @app.route('/add_game/<int:game_id>', methods=['POST'])
@@ -229,7 +229,7 @@ def add_game(game_id):
 
     add_game_to_db(game_id)
     
-    # connect added game to correct user and category table
+    # connect added game to correct user and Category table
     response = requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}')
     if response.status_code == 200:
         new_game = Game.query.filter_by(game_id=game_id).first()
@@ -238,6 +238,15 @@ def add_game(game_id):
             user_id = g.user.id
         )
         db.session.add(cat1)
+        db.session.commit()
+
+        # connect added game to correct user and GameCategory table
+        new_cat = Category.query.filter_by(all_games=game_id).first()
+        game_cat = GameCategory(
+            game_id = new_game.id,
+            category_id = new_cat.id
+        )
+        db.session.add(game_cat)
         db.session.commit()
 
         flash("Game added to All Games library", "success")
