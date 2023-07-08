@@ -22,13 +22,7 @@
     </li>
   </ul>
 
-  <h1>Games go here</h1>
-
-  <!-- add if and elif when users have no games in library -->
-
-  <p>{{user.categories}}</p>
-  <p>{{user.categories[0].all_games}}</p>
- 
+  {% if user.categories %}
 
   <div class="row row-cols-1 row-cols-md-2 g-4">
     {% for category in user.categories %}
@@ -62,7 +56,11 @@
     {% endfor %}
   </div>
 
+  {% elif user.categories is none or user.categories|length == 0 %}
 
+  <h1>Games go here</h1>
+
+  {% endif %}
 
 {% endblock %}
 
