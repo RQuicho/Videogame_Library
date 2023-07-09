@@ -33,19 +33,19 @@
             <div class="card">
               <img src="{{game.background_image}}" class="card-img-top" alt="Image of {{game.name}}">
               <div class="card-body">
-                <h5 class="card-title">{{game.name}}</h5>
-                <p class="card-text">Genre: 
-                  {% for genre in game.genres %}
-                    {{genre.name}} |
+                <h5 class="card-title">{{game.name}}</h5>                
+                <p class="card-text">Genre:
+                  {% for genre in game.genre %}
+                    {{genre}} |
                   {% endfor %}
                 </p>
                 <p class="card-text">Platforms: 
-                  {% for platform in game.platforms %}
-                    {{platform.platform.name}} |
+                  {% for platform in game.platform %}
+                    {{platform}} |
                   {% endfor %}
                 </p>
                 <p class="card-text">Released: {{game.released}}</p>
-                <p class="card-text">ESRB Rating: {{game.esrb_rating.name}}</p>
+                <p class="card-text">ESRB Rating: {{game.esrb_rating}}</p>
               </div>
               <div class="card-body">
                 <a href="#" class="card-link">See Details</a>
@@ -66,6 +66,7 @@
   {% else %}
     <h1>Games go here</h1>
   {% endif %}
+
 
 {% endblock %}
 
