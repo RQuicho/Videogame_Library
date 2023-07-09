@@ -204,7 +204,7 @@ def show_user_details(user_id):
 # All_Games routes
 
 @app.route('/users/<int:user_id>/all_games', methods=['GET', 'POST'])
-def show_user_games(user_id):
+def show_user_all_games(user_id):
     """Show user's all_games library."""
 
     if not g.user:
@@ -240,7 +240,7 @@ def add_game(game_id):
         db.session.add(cat1)
         db.session.commit()
 
-        # connect added game to correct user and GameCategory table
+        # connect added game to GameCategory table
         new_cat = Category.query.filter_by(all_games=game_id).first()
         game_cat = GameCategory(
             game_id = new_game.id,
@@ -262,7 +262,55 @@ def add_game(game_id):
 
 @app.route('/users/<int:user_id>/favorites', methods=['GET', 'POST'])
 def show_user_favorites(user_id):
+    """Show user's favorites library."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect('/')
+    if user_id != g.user.id:
+        flash("Unauthorized user ID.", "danger")
+        return redirect('/')
+    user_id = g.user.id
+    user = User.query.get_or_404(user_id)
+
+    return render_template('user_favorites.html', user=user)
+
+
+@app.route('/favorites/<int:game_id>', methods=['POST'])
+def add_favorite(game_id):
     """Add game to Games table and add to correct Category"""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect('/')
+
+    add_game_to_db(game_id)
+    
+    # connect added game to correct user and Category table
+    response = requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}')
+    if response.status_code == 200:
+        new_game = Game.query.filter_by(game_id=game_id).first()
+        cat1 = Category(
+            favorites = new_game.game_id,
+            user_id = g.user.id
+        )
+        db.session.add(cat1)
+        db.session.commit()
+
+        # connect added game to GameCategory table
+        new_cat = Category.query.filter_by(favorites=game_id).first()
+        game_cat = GameCategory(
+            game_id = new_game.id,
+            category_id = new_cat.id
+        )
+        db.session.add(game_cat)
+        db.session.commit()
+
+        flash("Game added to Favorites library", "success")
+        return redirect('/')
+    else:
+        flash("Error: Fialed to retrieve game details from the API", "danger")
+        return redirect('/')
 
     
 

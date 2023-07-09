@@ -6,10 +6,10 @@
 
 <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="/users/{{user.id}}/all_games">All Games</a>
+      <a class="nav-link" href="/users/{{user.id}}/all_games">All Games</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="/users/{{user.id}}/favorites">Favorites</a>
+      <a class="nav-link active" aria-current="page" href="/users/{{user.id}}/favorites">Favorites</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="/users/{{user.id}}/played">Played</a>
@@ -27,7 +27,7 @@
 
   <div class="row row-cols-1 row-cols-md-2 g-4">
     {% for category in user.categories %}
-      {% if category.all_games %}
+      {% if category.favorites %}
         {% for game in category.games %}
           <div class="col">
             <div class="card">
@@ -54,12 +54,12 @@
           </div>
         {% endfor %}
         {% elif category.all_games is none and 
-                category.favorites is none and 
-                category.played is none and 
-                category. completed is none and 
-                category.planned is none
+          category.favorites is none and 
+          category.played is none and 
+          category. completed is none and 
+          category.planned is none
         %}
-          <h1>No games in All Games library</h1>
+          <h1>No games in Favorites library</h1>
       {% endif %}
     {% endfor %}
   </div>
