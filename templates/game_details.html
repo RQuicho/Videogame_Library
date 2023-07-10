@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h1>{{game.name}}</h1>
+
+<img src="{{game.background_image}}" alt="Image of {{game.name}}" width="800">
+
+<h4>Description</h4>
+<p>
+  {% if game.description %}
+    {{game.description|striptags}}
+  {% else %}
+    N/A
+  {% endif %}
+</p>
+
+
+<h4>Game Series Count</h4>
+<p>
+  {% if game.game_series_count %}
+    {{game.game_series_count}}
+  {% else %}
+    N/A
+  {% endif %}
+</p>
+
+<h4>Developer</h4>
+<p>
+  {% if game.developers %}
+    {{game.developers[0].name}}
+  {% else %}
+    N/A
+  {% endif %}
+</p>
+
+<h4>Publisher</h4>
+<p>
+  {% if game.publishers %}
+    {{game.publishers[0].name}}
+  {% else %}
+    N/A
+  {% endif %}
+</p>
+
+<h4>Stores</h4>
+<p>
+  {% if game.stores %}
+    {% for store in game.stores %}
+      {{store.store.name}} |
+    {% endfor %}
+  {% else %}
+    N/A
+  {% endif %}
+</p>
+
+<h4>Genre</h4>
+<p>
+  {% if game.genres %}
+    {% for genre in game.genres %}
+      {{genre.name}} |
+    {% endfor %}
+  {% else %}
+    N/A
+  {% endif %}
+</p>
+  
+<h4>Platforms</h4>
+<p>
+  {% if game.platforms %}
+    {% for platform in game.platforms %}
+      {{platform.platform.name}} |
+    {% endfor %}
+  {% else %}
+    N/A
+  {% endif %}
+</p>
+  
+<h4>Released:</h4>
+<p>
+  {% if game.released %}
+    {{game.released}}
+  {% else %}
+    N/A
+  {% endif %}
+</p>
+
+<h4>ESRB Rating:</h4>
+<p>
+  {% if game.esrb_rating %}
+    {{game.esrb_rating.name}}
+  {% else %}
+    N/A
+  {% endif %}
+</p>
+
+
+{% endblock %}
+

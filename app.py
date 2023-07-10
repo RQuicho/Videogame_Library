@@ -30,12 +30,12 @@ def add_game_to_db(game_id):
             tba = game['tba'],
             background_image = game['background_image'],
             game_series_count = game['game_series_count'],
-            esrb_rating = game['esrb_rating']['name'],
-            genre = [genre['name'] for genre in game['genres']],
+            esrb_rating = game['esrb_rating']['name'] if game['esrb_rating'] else 'N/A',
+            genre = [genre['name'] for genre in game['genres']] if game['genres'] else 'N/A',
             platform = [platform['platform']['name'] for platform in game['platforms']],
             store = [store['store']['name'] for store in game['stores']],
             developer = game['developers'][0]['name'],
-            publisher = game['publishers'][0]['name']
+            publisher = game['publishers'][0]['name'] if game['publishers'] else 'N/A'
                            
         )
         db.session.add(g1)
@@ -77,9 +77,27 @@ def show_games():
     # https://api.rawg.io/api/games/{id} (.description)
 
 
-    @app.route('/games/<int:game_id>', methods=['GET'])
-    def show_game_details():
-        """Shows detail of one game"""
+
+#############################################################################################################################
+# Game Details routes
+
+@app.route('/games/<int:game_id>', methods=['GET'])
+def show_game_details(game_id):
+    """Shows detail of one game"""
+
+    # game = Game.query.filter_by(game_id=game_id).first()
+    # game = Game.query.get_or_404(game_id)
+
+    # return render_template('game_details.html', game=game)
+
+   
+    response = requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}')
+    
+    if response.status_code == 200:
+        data = response.json()
+        return render_template('game_details.html', game=data)
+    else:
+        return "Error: Failed to retrieve data from the API"
 
 
 
@@ -341,5 +359,10 @@ def add_favorite(game_id):
 
 #############################################################################################################################
 # Planned routes
+
+
+
+
+
 
 

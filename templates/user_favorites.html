@@ -22,6 +22,7 @@
     </li>
   </ul>
 
+  <br>
 
   {% if user.categories %}
 
@@ -34,21 +35,42 @@
               <img src="{{game.background_image}}" class="card-img-top" alt="Image of {{game.name}}">
               <div class="card-body">
                 <h5 class="card-title">{{game.name}}</h5>
-                <p class="card-text">Genre: 
-                  {% for genre in game.genre %}
-                    {{genre}} |
-                  {% endfor %}
+                <p class="card-text">Genre:
+                  {% if game.genres %}
+                    {% for genre in game.genre %}
+                      {{genre}} |
+                    {% endfor %}
+                  {% else %}
+                    N/A
+                  {% endif %}
                 </p>
                 <p class="card-text">Platforms: 
-                  {% for platform in game.platform %}
-                    {{platform}} |
-                  {% endfor %}
+                  {% if game.platform %}
+                    {% for platform in game.platform %}
+                      {{platform}} |
+                    {% endfor %}
+                  {% else %}
+                    N/A
+                  {% endif %}
                 </p>
-                <p class="card-text">Released: {{game.released}}</p>
-                <p class="card-text">ESRB Rating: {{game.esrb_rating}}</p>
+                <p class="card-text">Released:
+                  {% if game.released %} 
+                    {{game.released}}
+                  {% else %}
+                    N/A
+                  {% endif %}
+                </p>
+                <p class="card-text">ESRB Rating: 
+                  {% if game.esrb_rating %}
+                    {{game.esrb_rating}}
+                  {% else %}
+                    N/A
+                  {% endif %}
+                </p>
               </div>
               <div class="card-body">
                 <a href="#" class="card-link">See Details</a>
+                <a href="#" class="card-link">Delete</a>
               </div>
             </div>
           </div>

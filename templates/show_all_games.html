@@ -11,17 +11,37 @@
         <div class="card-body">
           <h5 class="card-title">{{game.name}}</h5>
           <p class="card-text">Genre: 
-            {% for genre in game.genres %}
-              {{genre.name}} |
-            {% endfor %}
+            {% if game.genres %}
+              {% for genre in game.genres %}
+                {{genre.name}} |
+              {% endfor %}
+            {% else %}
+              N/A
+            {% endif %}
           </p>
           <p class="card-text">Platforms: 
-            {% for platform in game.platforms %}
-              {{platform.platform.name}} |
-            {% endfor %}
+            {% if game.platforms %}
+              {% for platform in game.platforms %}
+                {{platform.platform.name}} |
+              {% endfor %}
+            {% else %}
+              N/A
+            {% endif %}
           </p>
-          <p class="card-text">Released: {{game.released}}</p>
-          <p class="card-text">ESRB Rating: {{game.esrb_rating.name}}</p>
+          <p class="card-text">Released: 
+            {% if game.released %}
+              {{game.released}}
+            {% else %}
+              N/A
+            {% endif %}
+          </p>
+          <p class="card-text">ESRB Rating: 
+            {% if game.esrb_rating %}
+              {{game.esrb_rating.name}}
+            {% else %}
+              N/A
+            {% endif %}
+          </p>
         </div>
         <div class="card-body">
           <div class="dropdown">
@@ -46,7 +66,7 @@
               <li><a class="dropdown-item" href="/">Plan to Play</a></li>
             </ul>
           </div>
-          <a href="#" class="card-link">See Details</a>
+          <a href="/games/{{game.id}}" class="card-link">See Details</a>
         </div>
       </div>
     </div>

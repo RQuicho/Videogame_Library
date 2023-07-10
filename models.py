@@ -69,11 +69,14 @@ class Game(db.Model):
     esrb_rating = db.Column(db.String, default='N/A')
     genre = db.Column(db.JSON, default='N/A')
     platform = db.Column(db.JSON, default='N/A')
-    store = db.Column(db.Text, default='N/A')
+    store = db.Column(db.JSON, default='N/A')
     developer = db.Column(db.Text, default='N/A')
     publisher = db.Column(db.Text, default='N/A')
 
     users = db.relationship('User', backref='games')
+
+    def __repr__(self):
+        return f"<Game #{self.id}:, game_id: {self.game_id}, name: {self.name}>"
     
 
 
@@ -89,6 +92,9 @@ class Category(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'))
 
     games = db.relationship('Game', secondary='games_categories', backref='categories')
+
+    def __repr__(self):
+        return f"<Category #{self.id}, all_games: {self.all_games}, favorites: {self.favorites}, played: {self.played}, completed: {self.completed}, planned: {self.planned}, user_id: {self.user_id}>"
 
 
 class GameCategory(db.Model):
