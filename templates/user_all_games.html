@@ -36,7 +36,7 @@
               <div class="card-body">
                 <h5 class="card-title">{{game.name}}</h5>                
                 <p class="card-text">Genre:
-                  {% if game.genres %}
+                  {% if game.genre %}
                     {% for genre in game.genre %}
                       {{genre}} |
                     {% endfor %}
@@ -70,7 +70,10 @@
               </div>
               <div class="card-body">
                 <a href="/games/{{game.game_id}}" class="card-link">See Details</a>
-                <a href="#" class="card-link">Delete</a>
+                <form action="/delete_game/{{game.game_id}}" method="POST">
+                  <button>Delete</a></button>
+                </form>
+                
               </div>
             </div>
           </div>

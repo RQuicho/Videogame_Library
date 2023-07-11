@@ -20,7 +20,7 @@ with app.app_context():
 
     u1 = User.signup('Link', 'link@email.com', 'CookingIsFun')
 
-    u2 = User.signup('Zelda', 'zelda@email.com', 'The blood moon rises')
+    u2 = User.signup('Zelda', 'zelda@email.com', 'Thebloodmoonrises')
 
     # g1 = Game(
     #     name = games_data['results'][0]['name'],

@@ -84,12 +84,6 @@ def show_games():
 @app.route('/games/<int:game_id>', methods=['GET'])
 def show_game_details(game_id):
     """Shows detail of one game"""
-
-    # game = Game.query.filter_by(game_id=game_id).first()
-    # game = Game.query.get_or_404(game_id)
-
-    # return render_template('game_details.html', game=game)
-
    
     response = requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}')
     
@@ -98,8 +92,6 @@ def show_game_details(game_id):
         return render_template('game_details.html', game=data)
     else:
         return "Error: Failed to retrieve data from the API"
-
-
 
 
 
@@ -272,6 +264,24 @@ def add_game(game_id):
     else:
         flash("Error: Fialed to retrieve game details from the API", "danger")
         return redirect('/')
+
+@app.route('/delete_game/<int:game_id>', methods=['POST'])
+def delete_game(game_id):
+    """Delete game from all_games library"""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect('/')
+
+    game = Game.query.filter_by(game_id=game_id).first()
+    user_id = g.user.id
+    category = Category.query.filter_by(all_games=game_id).first()
+
+    db.session.delete(game)
+    db.session.delete(category)
+    db.session.commit()
+
+    return redirect(f'/users/{user_id}/all_games')
 
 
 

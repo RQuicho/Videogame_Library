@@ -17,7 +17,6 @@ class User(db.Model):
     username = db.Column(db.Text, nullable=False, unique=True)
     password = db.Column(db.Text, nullable=False)
     email = db.Column(db.Text, nullable=False, unique=True)
-    # possibly add a user image later
     game_id = db.Column(db.Integer, db.ForeignKey('games.id', ondelete='cascade'))
 
     categories = db.relationship('Category', backref='users')
@@ -74,6 +73,7 @@ class Game(db.Model):
     publisher = db.Column(db.Text, default='N/A')
 
     users = db.relationship('User', backref='games')
+    # categories = db.relationship('Category', secondary='games_categories', backref='games')
 
     def __repr__(self):
         return f"<Game #{self.id}:, game_id: {self.game_id}, name: {self.name}>"
@@ -101,5 +101,5 @@ class GameCategory(db.Model):
     __tablename__ = 'games_categories'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    game_id = db.Column(db.Integer, db.ForeignKey('games.id'), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
+    game_id = db.Column(db.Integer, db.ForeignKey('games.id', ondelete='cascade'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id', ondelete='cascade'), nullable=False)
