@@ -223,6 +223,7 @@ def show_user_all_games(user_id):
     if user_id != g.user.id:
         flash("Unauthorized user ID.", "danger")
         return redirect('/')
+        
     user_id = g.user.id
     user = User.query.get_or_404(user_id)
 
@@ -273,21 +274,24 @@ def add_all_game(game_id):
         return redirect('/')
 
 
-@app.route('/delete_game/<int:game_id>', methods=['POST'])
-def delete_game(game_id):
+@app.route('/delete_all_game/<int:game_id>', methods=['POST'])
+def delete_all_game(game_id):
     """Delete game from all_games library"""
 
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect('/')
-
-    game = Game.query.filter_by(game_id=game_id).first()
+    
+    category = Category.query.filter_by(all_games=game_id, user_id=g.user.id).first()
     user_id = g.user.id
-    category = Category.query.filter_by(all_games=game_id).first()
+    # if category:
+    #     game = Game.query.filter_by(game_id=game_id).first()
+    
 
-    db.session.delete(game)
+    # db.session.delete(game)
     db.session.delete(category)
     db.session.commit()
+    flash("Game deleted from All Games library", "warning")
 
     return redirect(f'/users/{user_id}/all_games')
 
@@ -306,6 +310,7 @@ def show_user_favorites(user_id):
     if user_id != g.user.id:
         flash("Unauthorized user ID.", "danger")
         return redirect('/')
+        
     user_id = g.user.id
     user = User.query.get_or_404(user_id)
 
@@ -322,7 +327,7 @@ def add_favorite(game_id):
 
     existing_category = Category.query.filter_by(favorites=game_id, user_id=g.user.id).first()
     if existing_category:
-        flash('Game already in Favorites library', 'info')
+        flash('Game already in All Games library', 'info')
         return redirect('/')
 
     add_game_to_db(game_id)
@@ -330,7 +335,9 @@ def add_favorite(game_id):
     # connect added game to correct user and Category table
     response = requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}')
     if response.status_code == 200:
+        # connect added game to Category table
         new_game = Game.query.filter_by(game_id=game_id).first()
+        
         cat1 = Category(
             favorites = new_game.game_id,
             user_id = g.user.id
@@ -353,15 +360,110 @@ def add_favorite(game_id):
         flash("Error: Fialed to retrieve game details from the API", "danger")
         return redirect('/')
 
-    
 
+@app.route('/delete_favorite/<int:game_id>', methods=['POST'])
+def delete_favorite(game_id):
+    """Delete game from favorites library"""
 
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect('/')
+
+    game = Game.query.filter_by(game_id=game_id).first()
+    user_id = g.user.id
+    category = Category.query.filter_by(favorites=game_id).first()
+
+    db.session.delete(game)
+    db.session.delete(category)
+    db.session.commit()
+    flash("Game deleted from Favorites library", "warning")
+
+    return redirect(f'/users/{user_id}/favorites')
 
 
 
 
 #############################################################################################################################
 # Played routes
+
+@app.route('/users/<int:user_id>/played', methods=['GET', 'POST'])
+def show_user_played(user_id):
+    """Show user's played library."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect('/')
+    if user_id != g.user.id:
+        flash("Unauthorized user ID.", "danger")
+        return redirect('/')
+        
+    user_id = g.user.id
+    user = User.query.get_or_404(user_id)
+
+    return render_template('user_played.html', user=user)
+
+
+@app.route('/played/<int:game_id>', methods=['POST'])
+def add_played(game_id):
+    """Add game to Games table and add to correct Category"""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect('/')
+
+    existing_category = Category.query.filter_by(played=game_id, user_id=g.user.id).first()
+    if existing_category:
+        flash('Game already in Played library', 'info')
+        return redirect('/')
+
+    add_game_to_db(game_id)
+    
+    # connect added game to correct user and Category table
+    response = requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}')
+    if response.status_code == 200:
+        # connect added game to Category table
+        new_game = Game.query.filter_by(game_id=game_id).first()
+        
+        cat1 = Category(
+            played = new_game.game_id,
+            user_id = g.user.id
+        )
+        db.session.add(cat1)
+        db.session.commit()
+
+        # connect added game to GameCategory table
+        new_cat = Category.query.filter_by(played=game_id).first()
+        game_cat = GameCategory(
+            game_id = new_game.id,
+            category_id = new_cat.id
+        )
+        db.session.add(game_cat)
+        db.session.commit()
+
+        flash("Game added to Played library", "success")
+        return redirect('/')
+    else:
+        flash("Error: Fialed to retrieve game details from the API", "danger")
+        return redirect('/')
+
+
+@app.route('/delete_game/<int:game_id>', methods=['POST'])
+def delete_game(game_id):
+    """Delete game from all_games library"""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect('/')
+
+    game = Game.query.filter_by(game_id=game_id).first()
+    user_id = g.user.id
+    category = Category.query.filter_by(all_games=game_id).first()
+
+    db.session.delete(game)
+    db.session.delete(category)
+    db.session.commit()
+
+    return redirect(f'/users/{user_id}/all_games')
 
 
 

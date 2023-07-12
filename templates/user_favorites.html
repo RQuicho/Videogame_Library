@@ -24,22 +24,6 @@
 
   <br>
 
-  <!-- <p>{{user.categories}}</p>
-  <p>{{user.categories[0]}}</p>
-  <p>{{user.categories[0].favorites}}</p>
-  <p>{{user.categories.favorites}}</p>
-
-
-  {% for category in user.categories %}
-    {% if category.favorites %}
-
-    {% else %}
-        <h1>No games in Favorites library</h1>
-    {% endif %}
-  {% endfor %} -->
-
-  
-  
 
   {% if user.categories %}
   <div class="row row-cols-1 row-cols-md-2 g-4">
@@ -86,11 +70,18 @@
               </div>
               <div class="card-body">
                 <a href="/games/{{game.game_id}}" class="card-link">See Details</a>
-                <a href="#" class="card-link">Delete</a>
+                <a href="/delete_favorite/{{game.game_id}}" class="card-link">Delete</a>
               </div>
             </div>
           </div>
         {% endfor %}
+        {% elif category.all_games is none and 
+          category.favorites is none and 
+          category.played is none and 
+          category. completed is none and 
+          category.planned is none
+        %}
+          <h1>No games in All Games library</h1>
       {% endif %}
     {% endfor %}
   </div>
