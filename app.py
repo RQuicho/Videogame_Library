@@ -38,8 +38,8 @@ def add_game_to_db(game_id):
             publisher = game['publishers'][0]['name'] if game['publishers'] else 'N/A'
                            
         )
-        db.session.add(g1)
-        db.session.commit()
+    db.session.add(g1)
+    db.session.commit()
         
 
 
@@ -229,12 +229,17 @@ def show_user_all_games(user_id):
     return render_template('user_all_games.html', user=user)
 
 
-@app.route('/add_game/<int:game_id>', methods=['POST'])
-def add_game(game_id):
+@app.route('/all_games/<int:game_id>', methods=['POST'])
+def add_all_game(game_id):
     """Add game to Games table and add to correct Category"""
 
     if not g.user:
         flash("Access unauthorized.", "danger")
+        return redirect('/')
+
+    existing_category = Category.query.filter_by(all_games=game_id, user_id=g.user.id).first()
+    if existing_category:
+        flash('Game already in All Games library', 'info')
         return redirect('/')
 
     add_game_to_db(game_id)
@@ -242,7 +247,9 @@ def add_game(game_id):
     # connect added game to correct user and Category table
     response = requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}')
     if response.status_code == 200:
+        # connect added game to Category table
         new_game = Game.query.filter_by(game_id=game_id).first()
+        
         cat1 = Category(
             all_games = new_game.game_id,
             user_id = g.user.id
@@ -264,6 +271,7 @@ def add_game(game_id):
     else:
         flash("Error: Fialed to retrieve game details from the API", "danger")
         return redirect('/')
+
 
 @app.route('/delete_game/<int:game_id>', methods=['POST'])
 def delete_game(game_id):
@@ -310,6 +318,11 @@ def add_favorite(game_id):
 
     if not g.user:
         flash("Access unauthorized.", "danger")
+        return redirect('/')
+
+    existing_category = Category.query.filter_by(favorites=game_id, user_id=g.user.id).first()
+    if existing_category:
+        flash('Game already in Favorites library', 'info')
         return redirect('/')
 
     add_game_to_db(game_id)
