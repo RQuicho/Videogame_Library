@@ -66,6 +66,12 @@ def show_games():
     else:
         return "Error: Failed to retrieve data from the API"
 
+# @app.route('/filter', methods=['GET', 'POST'])
+# def show_filtered_games():
+#     """Show all games with filters"""
+
+#     response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}')
+
        
 
     # 'next': 'https://api.rawg.io/api/games?key=25160d19f0744f488c544b98e663fd62&page=2', 'previous': None
@@ -284,11 +290,6 @@ def delete_all_game(game_id):
     
     category = Category.query.filter_by(all_games=game_id, user_id=g.user.id).first()
     user_id = g.user.id
-    # if category:
-    #     game = Game.query.filter_by(game_id=game_id).first()
-    
-
-    # db.session.delete(game)
     db.session.delete(category)
     db.session.commit()
     flash("Game deleted from All Games library", "warning")
@@ -327,7 +328,7 @@ def add_favorite(game_id):
 
     existing_category = Category.query.filter_by(favorites=game_id, user_id=g.user.id).first()
     if existing_category:
-        flash('Game already in All Games library', 'info')
+        flash('Game already in Favorites library', 'info')
         return redirect('/')
 
     add_game_to_db(game_id)
@@ -368,12 +369,9 @@ def delete_favorite(game_id):
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect('/')
-
-    game = Game.query.filter_by(game_id=game_id).first()
+    
+    category = Category.query.filter_by(favorites=game_id, user_id=g.user.id).first()
     user_id = g.user.id
-    category = Category.query.filter_by(favorites=game_id).first()
-
-    db.session.delete(game)
     db.session.delete(category)
     db.session.commit()
     flash("Game deleted from Favorites library", "warning")
@@ -447,23 +445,21 @@ def add_played(game_id):
         return redirect('/')
 
 
-@app.route('/delete_game/<int:game_id>', methods=['POST'])
-def delete_game(game_id):
-    """Delete game from all_games library"""
+@app.route('/delete_played/<int:game_id>', methods=['POST'])
+def delete_played(game_id):
+    """Delete game from played library"""
 
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect('/')
-
-    game = Game.query.filter_by(game_id=game_id).first()
+    
+    category = Category.query.filter_by(played=game_id, user_id=g.user.id).first()
     user_id = g.user.id
-    category = Category.query.filter_by(all_games=game_id).first()
-
-    db.session.delete(game)
     db.session.delete(category)
     db.session.commit()
+    flash("Game deleted from Played library", "warning")
 
-    return redirect(f'/users/{user_id}/all_games')
+    return redirect(f'/users/{user_id}/played')
 
 
 

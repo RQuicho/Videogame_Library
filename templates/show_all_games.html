@@ -58,10 +58,15 @@
                 <form method="POST" action="{{url_for('add_favorite', game_id=game.id)}}">
                   <button class="dropdown-item" href="/">Favorites</button>
                 </form>
-              </li>           
+              </li>     
+              <li>
+                <form method="POST" action="{{url_for('add_played', game_id=game.id)}}">
+                  <button class="dropdown-item" href="/">Played</button>
+                </form>
+              </li>        
           
               
-              <li><a class="dropdown-item" href="/">Played</a></li>
+             
               <li><a class="dropdown-item" href="/">Completed</a></li>
               <li><a class="dropdown-item" href="/">Plan to Play</a></li>
             </ul>
