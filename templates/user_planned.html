@@ -9,7 +9,7 @@
       <a class="nav-link" href="/users/{{user.id}}/all_games">All Games</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="/users/{{user.id}}/favorites">Favorites</a>
+      <a class="nav-link" href="/users/{{user.id}}/favorites">Favorites</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="/users/{{user.id}}/played">Played</a>
@@ -18,23 +18,23 @@
         <a class="nav-link" href="/users/{{user.id}}/completed">Completed</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/users/{{user.id}}/planned">Plan to Play</a>
+        <a class="nav-link active" aria-current="page" href="/users/{{user.id}}/planned">Plan to Play</a>
     </li>
   </ul>
 
   <br>
 
-
   {% if user.categories %}
+
   <div class="row row-cols-1 row-cols-md-2 g-4">
     {% for category in user.categories %}
-      {% if category.favorites %}
+      {% if category.planned %}
         {% for game in category.games %}
           <div class="col">
             <div class="card">
               <img src="{{game.background_image}}" class="card-img-top" alt="Image of {{game.name}}">
               <div class="card-body">
-                <h5 class="card-title">{{game.name}}</h5>
+                <h5 class="card-title">{{game.name}}</h5>                
                 <p class="card-text">Genre:
                   {% if game.genre %}
                     {% for genre in game.genre %}
@@ -70,26 +70,28 @@
               </div>
               <div class="card-body">
                 <a href="/games/{{game.game_id}}" class="card-link">See Details</a>
-                <form action="/delete_favorite/{{game.game_id}}" method="POST">
+                <form action="/delete_planned/{{game.game_id}}" method="POST">
                   <button>Delete</a></button>
                 </form>
+                
               </div>
             </div>
           </div>
         {% endfor %}
         {% elif category.all_games is none and 
-          category.favorites is none and 
-          category.played is none and 
-          category. completed is none and 
-          category.planned is none
+                category.favorites is none and 
+                category.played is none and 
+                category. completed is none and 
+                category.planned is none
         %}
-          <h1>No games in Favorites library</h1>
+          <h1>No games in Plan To Play library</h1>
       {% endif %}
     {% endfor %}
   </div>
   {% else %}
     <h1>Games go here</h1>
   {% endif %}
+
 
 {% endblock %}
 
