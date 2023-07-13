@@ -63,11 +63,15 @@
                 <form method="POST" action="{{url_for('add_played', game_id=game.id)}}">
                   <button class="dropdown-item" href="/">Played</button>
                 </form>
+              </li>    
+              <li>
+                <form method="POST" action="{{url_for('add_completed', game_id=game.id)}}">
+                  <button class="dropdown-item" href="/">Completed</button>
+                </form>
               </li>        
           
               
-             
-              <li><a class="dropdown-item" href="/">Completed</a></li>
+            
               <li><a class="dropdown-item" href="/">Plan to Play</a></li>
             </ul>
           </div>
