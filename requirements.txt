@@ -2,6 +2,7 @@ appnope==0.1.0
 backcall==0.1.0
 bcrypt==3.1.4
 blinker==1.4
+blueprint==3.4.2
 certifi==2023.5.7
 cffi==1.15.1
 charset-normalizer==3.1.0
