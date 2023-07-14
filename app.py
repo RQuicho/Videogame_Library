@@ -8,9 +8,9 @@ from flask_bcrypt import Bcrypt
 from secrets import API_KEY
 
 from admin.player import player
+from all_games.all_games import all_games
 
 app = Flask(__name__)
-
 
 app.config.from_object("config")
 connect_db(app)
@@ -45,8 +45,6 @@ def add_game_to_db(game_id):
     db.session.commit()
         
 
-
-
 #############################################################################################################################
 # Home Page
 
@@ -70,7 +68,6 @@ def show_games():
         return "Error: Failed to retrieve data from the API"
 
 
-
 #############################################################################################################################
 # Game Details routes
 
@@ -85,8 +82,6 @@ def show_game_details(game_id):
         return render_template('game_details.html', game=data)
     else:
         return "Error: Failed to retrieve data from the API"
-
-
 
 
 #############################################################################################################################
@@ -109,83 +104,8 @@ app.register_blueprint(player, url_prefix="")
 #############################################################################################################################
 # All_Games routes
 
-@app.route('/users/<int:user_id>/all_games', methods=['GET', 'POST'])
-def show_user_all_games(user_id):
-    """Show user's all_games library."""
 
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect('/')
-    if user_id != g.user.id:
-        flash("Unauthorized user ID.", "danger")
-        return redirect('/')
-        
-    user_id = g.user.id
-    user = User.query.get_or_404(user_id)
-
-    return render_template('/libraries/all_games.html', user=user)
-
-
-@app.route('/all_games/<int:game_id>', methods=['POST'])
-def add_all_game(game_id):
-    """Add game to Games table and add to correct Category"""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect('/')
-
-    existing_category = Category.query.filter_by(all_games=game_id, user_id=g.user.id).first()
-    if existing_category:
-        flash('Game already in All Games library', 'info')
-        return redirect('/')
-
-    add_game_to_db(game_id)
-    
-    # connect added game to correct user and Category table
-    response = requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}')
-    if response.status_code == 200:
-        # connect added game to Category table
-        new_game = Game.query.filter_by(game_id=game_id).first()
-        
-        cat1 = Category(
-            all_games = new_game.game_id,
-            user_id = g.user.id
-        )
-        db.session.add(cat1)
-        db.session.commit()
-
-        # connect added game to GameCategory table
-        new_cat = Category.query.filter_by(all_games=game_id).first()
-        game_cat = GameCategory(
-            game_id = new_game.id,
-            category_id = new_cat.id
-        )
-        db.session.add(game_cat)
-        db.session.commit()
-
-        flash("Game added to All Games library", "success")
-        return redirect('/')
-    else:
-        flash("Error: Fialed to retrieve game details from the API", "danger")
-        return redirect('/')
-
-
-@app.route('/delete_all_game/<int:game_id>', methods=['POST'])
-def delete_all_game(game_id):
-    """Delete game from all_games library"""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect('/')
-    
-    category = Category.query.filter_by(all_games=game_id, user_id=g.user.id).first()
-    user_id = g.user.id
-    db.session.delete(category)
-    db.session.commit()
-    flash("Game deleted from All Games library", "warning")
-
-    return redirect(f'/users/{user_id}/all_games')
-
+app.register_blueprint(all_games, url_prefix="")
 
 
 #############################################################################################################################
