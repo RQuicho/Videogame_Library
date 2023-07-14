@@ -7,7 +7,7 @@ from forms import UserAddForm, UserEditForm, LoginForm
 from flask_bcrypt import Bcrypt
 from secrets import API_KEY
 
-player = Blueprint("player", __name__, template_folder="templates")
+user = Blueprint("user", __name__, template_folder="templates")
 
 CURR_USER_KEY = 'curr_user'
 
@@ -24,7 +24,7 @@ def do_logout():
         del session[CURR_USER_KEY]
 
 
-@player.route('/signup', methods=['GET', 'POST'])
+@user.route('/signup', methods=['GET', 'POST'])
 def signup():
     """Sing up new user."""
 
@@ -42,16 +42,16 @@ def signup():
             db.session.commit()
         except IntegrityError:
             flash("Usrename already taken", "danger")
-            return render_template('/signup.html', form=form)
+            return render_template('signup.html', form=form)
 
         do_login(user)
         return redirect("/")
 
     else:
-        return render_template('/signup.html', form=form)
+        return render_template('signup.html', form=form)
 
 
-@player.route('/login', methods=['GET', 'POST'])
+@user.route('/login', methods=['GET', 'POST'])
 def login():
     """Login user."""
 
@@ -64,10 +64,10 @@ def login():
             flash(f"Hello {user.username}!", "success")
             return redirect("/")
         flash("Invalid credentials.", "danger")
-    return render_template('/login.html', form=form)
+    return render_template('login.html', form=form)
 
 
-@player.route('/logout', methods=['GET', 'POST'])
+@user.route('/logout', methods=['GET', 'POST'])
 def logout():
     """Logout user."""
 
@@ -76,7 +76,7 @@ def logout():
     return redirect("/")
 
 
-@player.route('/users/<int:user_id>', methods=['GET', 'POST'])
+@user.route('/users/<int:user_id>', methods=['GET', 'POST'])
 def show_user_details(user_id):
     """Show user details and update info."""
 
@@ -107,4 +107,4 @@ def show_user_details(user_id):
             db.session.commit()
             flash("Successfully updated profile!", "success")
         return redirect('/')
-    return render_template('/user_details.html', user=user, form=form)
+    return render_template('user_details.html', user=user, form=form)

@@ -6,6 +6,7 @@ from models import db, connect_db, User, Game, Category, GameCategory
 from forms import UserAddForm, UserEditForm, LoginForm
 from flask_bcrypt import Bcrypt
 from secrets import API_KEY
+from functions import add_game_to_db
 
 
 all_games = Blueprint("all_games", __name__, template_folder="templates")
