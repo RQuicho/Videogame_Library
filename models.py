@@ -15,8 +15,8 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.Text, nullable=False, unique=True)
-    password = db.Column(db.Text, nullable=False)
     email = db.Column(db.Text, nullable=False, unique=True)
+    password = db.Column(db.Text, nullable=False)
     game_id = db.Column(db.Integer, db.ForeignKey('games.id', ondelete='cascade'))
 
     categories = db.relationship('Category', backref='users')
