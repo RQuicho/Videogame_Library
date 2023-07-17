@@ -15,9 +15,8 @@ class UserEditForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password (optional)', validators=[Length(min=8), Optional()])
+    confirm_password = PasswordField('Confirm Password (if updating old password)', validators=[Length(min=8), Optional()])
 
-    # confirm_password = PasswordField('Confirm Password (if changing old password)', validators=[EqualTo('password', message='Passwords must match')])
-    # submit = SubmitField('Update')
 
 class LoginForm(FlaskForm):
     """Form to login."""

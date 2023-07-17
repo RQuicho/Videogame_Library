@@ -8,6 +8,7 @@ from flask_bcrypt import Bcrypt
 from secrets import API_KEY
 
 user = Blueprint("user", __name__, template_folder="templates")
+bcrypt = Bcrypt()
 
 CURR_USER_KEY = 'curr_user'
 
@@ -36,6 +37,7 @@ def signup():
         try:
             user = User.signup(form.username.data, form.email.data, form.password.data)
             db.session.commit()
+            flash(f"Welcome {user.username}!", "success")
         except IntegrityError:
             flash("Usrename already taken", "danger")
             return render_template('signup.html', form=form)
@@ -85,22 +87,23 @@ def show_user_details(user_id):
 
     user_id = g.user.id
     user = User.query.get_or_404(user_id)
+    # user = g.user
 
     form = UserEditForm(obj=user)
     if form.validate_on_submit():
+        user.username = form.username.data
+        user.email = form.email.data
+        
         if form.password.data:
-            if User.authenticate(form.username.data, form.password.data):
-                user.username = form.username.data
-                user.email = form.email.data
-                user.password = hashed_pwd = bcrypt.generate_password_hash(form.password.data).decode('UTF-8')
-                db.session.commit()
-                flash("Successfully updated profile!", "success")
+            hashed_pwd = bcrypt.generate_password_hash(form.password.data).decode('UTF-8')
+            if form.password.data == form.confirm_password.data:
+                user.password = hashed_pwd
             else:
-                flash("Password Incorrect", "danger")
-        else:
-            user.username = form.username.data
-            user.email = form.email.data
-            db.session.commit()
-            flash("Successfully updated profile!", "success")
+                flash("Passwords do not match", "danger")
+                return render_template('user_details.html', user=user, form=form)
+
+        db.session.commit()
+        flash("Successfully updated profile!", "success")
         return redirect('/')
+
     return render_template('user_details.html', user=user, form=form)

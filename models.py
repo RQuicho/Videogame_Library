@@ -48,8 +48,6 @@ class User(db.Model):
 
         if u and bcrypt.check_password_hash(u.password, pwd):
             return u
-        elif not u:
-            return None
         else:
             return None
 
