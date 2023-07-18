@@ -38,6 +38,7 @@ def show_games():
 
     search = request.args.get('q')
     # possibly include a random page at end of url to randomly show games 
+    # or implement continuous scroll function using JavaScript
     # https://api.rawg.io/api/games?key=25160d19f0744f488c544b98e663fd62&page=2
 
     if not search:

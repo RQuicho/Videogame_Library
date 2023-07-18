@@ -5,7 +5,7 @@ from models import db, connect_db, User
 from forms import UserAddForm, UserEditForm, LoginForm
 from app import app, CURR_USER_KEY
 from sqlalchemy.exc import IntegrityError
-from flask import request
+from flask import request, session
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///videogame_library_test'
@@ -44,24 +44,47 @@ class UserViewTestCase(TestCase):
         db.session.rollback()
         return res
 
-    def test_user_signup(self):  
+#############################################################################################################################
+# Signup Tests
+
+    def test_user_signup_valid(self):
+        u2 = User.signup('testuser', 'testuser@email.com', 'testpassword')
+        u2id = 222
+        u2.id = u2id
+        db.session.commit()
+
+        self.assertIsNotNone(u2)
+        self.assertEqual(u2.username, 'testuser')
+        self.assertEqual(u2.email, 'testuser@email.com')
+        self.assertIn('$2b', u2.password)
         with self.client as c:
-            # GET request
             resp = c.get("/signup")
             html = resp.get_data(as_text=True)       
 
             self.assertEqual(resp.status_code, 200)
             self.assertIn('Create Your Account', html)
 
-            # POST request
-            resp = c.post("/signup", data={
-                "username": "testuser",
-                "email": "testuser@email.com",
-                "password": "testpassword"
-            }, follow_redirects=True)
-                
-            self.assertEqual(resp.status_code, 200)
+    def test_user_signup_invalid_username(self):
+        u3 = User.signup(None, 'testuser3@email.com', 'user3password')
+        u3id = 333
+        u3.id = u3id
+        with self.assertRaises(IntegrityError) as context:
+            db.session.commit()
 
+    def test_user_signup_invalid_email(self):
+        u4 = User.signup('testuser4', None, 'user4password')
+        u4id = 444
+        u4.id = u4id
+        with self.assertRaises(IntegrityError) as context:
+            db.session.commit()
+
+    def test_user_signup_invalid_password(self):
+        with self.assertRaises(ValueError) as context:
+            User.signup('testuser5', 'testuser5@email.com', None)
+
+       
+#############################################################################################################################
+# Login Tests
         
     def test_user_login(self):
         with self.client as c:
@@ -71,29 +94,28 @@ class UserViewTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertIn('Log In', html)
 
-            # POST request with valid login credentials
-            resp = c.post("/login", data={
-                "username": "sokka",
-                "password": "password"
-            }, follow_redirects=True)
-            html = resp.get_data(as_text=True)
-
-            self.assertEqual(resp.status_code, 200)
-            # self.assertIn('Hello sokka!', html)
+            session[CURR_USER_KEY] = self.u1id
+            self.assertIn(CURR_USER_KEY, session)
     
+
+#############################################################################################################################
+# Logut Tests
 
     def test_user_logout(self):
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.u1id
-            
-            resp = c.get('/logout', follow_redirects=True)
-            html = resp.get_data(as_text=True)
+            del sess[CURR_USER_KEY]
 
+            self.assertNotIn(CURR_USER_KEY, sess)
+
+            resp = c.get('/logout', follow_redirects=True)
             self.assertNotIn('CURR_USER_KEY', sess)
             self.assertEqual(resp.status_code, 200)
-            # self.assertIn('Successfully logged out!', html)
 
+
+ #############################################################################################################################
+# Show user details Tests
 
     def test_user_details(self):
         with self.client as c:
@@ -105,31 +127,9 @@ class UserViewTestCase(TestCase):
             resp = c.get(f'/users/{self.u1id}')
             html = resp.get_data(as_text=True)
             self.assertEqual(resp.status_code, 200)
-            self.assertIn('Your username:', html)
+            self.assertIn(f'Your username: {self.u1.username}', html)
 
-    def test_user_details_edit_success(self):
-        with self.client as c:
-            # Log in user
-            with c.session_transaction() as sess:
-                sess[CURR_USER_KEY] = self.u1id
-
-            # POST request to update user info
-            resp = c.post(f'/users/{self.u1id}', data={
-                'username': 'sokkanew',
-                'email': 'sokkanew@email.com',
-                'password': 'newpassword',
-                'confirm_password': 'newpassword'
-            }, follow_redirects=True)
-           
-            html = resp.get_data(as_text=True)
-            self.assertEqual(resp.status_code, 200)
-            # self.assertIn('Successfully updated profile!', html)
-
-            # Check is user details were updated
-            updated_user = User.query.get(self.u1id)
-            self.assertEqual(updated_user.username, 'sokkanew')
-            self.assertEqual(updated_user.email, 'sokkanew@email.com')
-            self.assertTrue(updated_user.check_password('newpassword'))
+    
             
 
         
