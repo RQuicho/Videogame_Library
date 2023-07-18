@@ -44,7 +44,7 @@ class AllGamesViewTestCase(TestCase):
         self.u1 = u1
         self.u1id = u1id
 
-        # Add game to all_games library
+        # Add game to Game library
         g1 = Game(
             game_id = 3328,
             name = 'The Witcher 3: Wild Hunt',
@@ -96,7 +96,7 @@ class AllGamesViewTestCase(TestCase):
 
 
    
-    def test_add_game(self):
+    def test_add_game_to_Game(self):
         g2 = Game(
             game_id = 4200,
             name = 'Portal 2',
@@ -127,7 +127,7 @@ class AllGamesViewTestCase(TestCase):
         self.assertEqual(g2.developer, 'Valve Software')
 
 
-    def test_game_added_to_category(self):
+    def test_assign_game_to_all_games(self):
         cat1 = Category(
             all_games = self.g1.game_id,
             user_id = self.u1id
@@ -143,7 +143,7 @@ class AllGamesViewTestCase(TestCase):
         self.assertEqual(cat1.all_games, 3328)
         self.assertEqual(cat1.user_id, 111)
 
-    def test_game_added_to_game_category(self):
+    def test_assign_game_to_game_category(self):
         cat1 = Category(
             all_games = self.g1.game_id,
             user_id = self.u1id
