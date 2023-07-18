@@ -9,8 +9,8 @@
 
 <h4>Description</h4>
 <p>
-  {% if game.description %}
-    {{game.description|striptags}}
+  {% if game.description_raw %}
+    {{game.description_raw}}
   {% else %}
     N/A
   {% endif %}
@@ -26,19 +26,23 @@
   {% endif %}
 </p>
 
-<h4>Developer</h4>
+<h4>Developers</h4>
 <p>
   {% if game.developers %}
-    {{game.developers[0].name}}
+    {% for dev in game.developers %}
+      {{dev.name}} |
+    {% endfor %}
   {% else %}
     N/A
   {% endif %}
 </p>
 
-<h4>Publisher</h4>
+<h4>Publishers</h4>
 <p>
   {% if game.publishers %}
-    {{game.publishers[0].name}}
+    {% for publisher in game.publishers %}
+      {{publisher.name}} |
+    {% endfor %}
   {% else %}
     N/A
   {% endif %}
@@ -55,7 +59,7 @@
   {% endif %}
 </p>
 
-<h4>Genre</h4>
+<h4>Genres</h4>
 <p>
   {% if game.genres %}
     {% for genre in game.genres %}

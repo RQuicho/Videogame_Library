@@ -86,7 +86,7 @@ class UserViewTestCase(TestCase):
 #############################################################################################################################
 # Login Tests
         
-    def test_user_login(self):
+    def test_user_login_valid(self):
         with self.client as c:
             # GET request to login page
             resp = c.get("/login")
@@ -96,6 +96,16 @@ class UserViewTestCase(TestCase):
 
             session[CURR_USER_KEY] = self.u1id
             self.assertIn(CURR_USER_KEY, session)
+
+    def test_user_login_invalid(self):
+        with self.client as c:
+            # GET request to login page
+            resp = c.get("/login")
+            html = resp.get_data(as_text=True)
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('Log In', html)
+
+            self.assertNotIn(CURR_USER_KEY, session)
     
 
 #############################################################################################################################

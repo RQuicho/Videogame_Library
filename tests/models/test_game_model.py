@@ -35,6 +35,7 @@ class GameModelTestCase(TestCase):
             publisher = 'CD PROJEKT RED'                           
         )
         gid = 1
+        g.id = gid
         db.session.add(g)
         db.session.commit()
 

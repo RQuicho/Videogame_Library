@@ -67,8 +67,8 @@ class Game(db.Model):
     genre = db.Column(db.JSON, default='N/A')
     platform = db.Column(db.JSON, default='N/A')
     store = db.Column(db.JSON, default='N/A')
-    developer = db.Column(db.Text, default='N/A')
-    publisher = db.Column(db.Text, default='N/A')
+    developer = db.Column(db.JSON, default='N/A')
+    publisher = db.Column(db.JSON, default='N/A')
 
     users = db.relationship('User', backref='games')
     # categories = db.relationship('Category', secondary='games_categories', backref='games')
