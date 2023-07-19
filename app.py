@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request, render_template, session, flash, g
+from flask import Flask, redirect, request, render_template, session, flash, g, jsonify
 import requests
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
@@ -119,6 +119,11 @@ app.register_blueprint(completed, url_prefix="")
 app.register_blueprint(planned, url_prefix="")
 
 
+#############################################################################################################################
+# API KEY route for scroll.js
 
+@app.route('/get_api_key', methods=['GET'])
+def get_api_key():
+    return jsonify(api_key=API_KEY)
 
 

@@ -5,7 +5,7 @@
 <h1>Browse The Videogame Library!</h1>
 
 
-  <div class="row row-cols-1 row-cols-md-2 g-4">
+  <div class="gameList row row-cols-1 row-cols-md-2 g-4">
     {% for game in response.results %}
     <div class="col">
       <div class="card">
@@ -85,12 +85,9 @@
     {% endfor %}
   </div>
 
+  <div id="end-of-list"></div>
+
 
 
 {% endblock %}
 
-
-<!-- {% if response.next %}
-  <a href="{{response.next}}">Next</a>
-{% endif %} -->
-<!-- <p>Developer: {{response2.results[0].name}}</p> -->
