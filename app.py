@@ -37,10 +37,7 @@ def show_games():
     """Show all games from API"""
 
     search = request.args.get('q')
-    # possibly include a random page at end of url to randomly show games 
-    # or implement continuous scroll function using JavaScript
-    # https://api.rawg.io/api/games?key=25160d19f0744f488c544b98e663fd62&page=2
-
+    
     if not search:
         response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}')
     else:
@@ -50,6 +47,24 @@ def show_games():
         return render_template('show_entire_lib.html', response=data)
     else:
         return "Error: Failed to retrieve data from the API"
+        
+
+@app.route('/platforms', methods=['GET', 'POST'])
+def show_games_by_platform():
+    """Show all games with platform filter"""
+
+    platform_id = request.form['platform_id']
+    
+    if not platform_id:
+        response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}')
+    else:
+        response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}&parent_platforms={platform_id}')
+    if response.status_code == 200:
+        data = response.json()
+        return render_template('show_entire_lib.html', response=data)
+    else:
+        return "Error: Failed to retrieve data from the API"
+
 
 
 #############################################################################################################################
@@ -125,5 +140,15 @@ app.register_blueprint(planned, url_prefix="")
 @app.route('/get_api_key', methods=['GET'])
 def get_api_key():
     return jsonify(api_key=API_KEY)
+
+
+
+
+
+
+
+
+
+    # https://api.rawg.io/api/games?key=25160d19f0744f488c544b98e663fd62&page=2
 
 

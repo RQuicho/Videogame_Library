@@ -4,6 +4,77 @@
 
 <h1>Browse The Videogame Library!</h1>
 
+<!-- Filter Platform Dropdown Menu -->
+<div class="filterDropdown">
+  <div class="card-body">
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Platform
+      </button>
+      <ul class="dropdown-menu" data-bs-theme="dark">
+        <li>
+          <form method="POST" action="{{url_for('show_games_by_platform')}}">
+            <input type="hidden" name="platform_id" value="1">
+            <button type="submit" class="dropdown-item pc" onclick="handlePlatformSelection(1)">PC</button>
+          </form>
+        </li>
+        <li>
+          <form method="POST" action="{{url_for('show_games_by_platform')}}">
+            <input type="hidden" name="platform_id" value="2">
+            <button type="submit" class="dropdown-item playstation" onclick="handlePlatformSelection(2)">PlayStation</button>
+          </form>
+        </li>
+        <li>
+          <form method="POST" action="{{url_for('show_games_by_platform')}}">
+            <input type="hidden" name="platform_id" value="3">
+            <button type="submit" class="dropdown-item xbox" onclick="handlePlatformSelection(3)">Xbox</button>
+          </form>
+        </li>
+        <li>
+          <form method="POST" action="{{url_for('show_games_by_platform')}}">
+            <input type="hidden" name="platform_id" value="7">
+            <button type="submit" class="dropdown-item nintendo" onclick="handlePlatformSelection(7)">Nintendo</button>
+          </form>
+        </li>
+        <li>
+          <form method="POST" action="{{url_for('show_games_by_platform')}}">
+            <input type="hidden" name="platform_id" value="11">
+            <button type="submit" class="dropdown-item sega" onclick="handlePlatformSelection(11)">Sega</button>
+          </form>
+        </li>
+        <li>
+          <form method="POST" action="{{url_for('show_games_by_platform')}}">
+            <input type="hidden" name="platform_id" value="9">
+            <button type="submit" class="dropdown-item atari" onclick="handlePlatformSelection(9)">Atari</button>
+          </form>
+        </li>
+
+        <li>
+          <form method="POST" action="{{url_for('show_games_by_platform')}}">
+            <input type="hidden" name="platform_id" value="4">
+            <button type="submit" class="dropdown-item ios" onclick="handlePlatformSelection(4)">iOS</button>
+          </form>
+        </li>
+        <li>
+          <form method="POST" action="{{url_for('show_games_by_platform')}}">
+            <input type="hidden" name="platform_id" value="8">
+            <button type="submit" class="dropdown-item android" onclick="handlePlatformSelection(8)">Android</button>
+          </form>
+        </li>
+        
+        
+                  
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Game Cards -->
 
   <div class="gameList row row-cols-1 row-cols-md-2 g-4">
     {% for game in response.results %}

@@ -5,8 +5,6 @@ fetch('/get_api_key')
   })
 .catch(error => console.log('Error fetching API key:', error));
 
-
-
 // isEndOfPage = () => {
 //     const endOfList = document.getElementById('end-of-list')
 //     const rect = endOfList.getBoundingClientRect() //gets position and size of element
@@ -81,7 +79,9 @@ appendGameCardToList = (gameCard) => {
 let nextPage = 2;
 
 loadMoreGames = () => {
-    const url = `https://api.rawg.io/api/games?key=${API_KEY}&page=${nextPage}`;
+    const platformFilter = selectedPlatformId ? `&parent_platforms=${selectedPlatformId}` : '';
+    const url = `https://api.rawg.io/api/games?key=${API_KEY}&page=${nextPage}${platformFilter}`;
+    console.log('selectedPlatformId: ', selectedPlatformId);
 
     fetch(url)
         .then((response) => response.json())
@@ -99,6 +99,18 @@ loadMoreGames = () => {
             }
         })
         .catch((error) => console.log('Error fetching games:', error));
+}
+
+///////////////// Scroll when platform filter clicked ///////////////
+
+let selectedPlatformId = null;
+
+const handlePlatformSelection = (platformID) => {
+  selectedPlatformId = platformID;
+  console.log('selectedPlatformId: ', selectedPlatformId);
+  gameList.innerHTML = '';
+  nextPage = 1;
+  loadMoreGames();
 }
 
 handleScroll = () => {
