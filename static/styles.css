@@ -1,0 +1,39 @@
+body {
+    background-color: rgb(182, 135, 191);
+}
+
+.home-page-title {
+    text-align: center;
+}
+
+
+.dropdown-gamecard-btn, .dropdown-platform-btn, .game-details-dropdown {
+    margin: 1rem 0;
+    background-color: rgb(102, 81, 122);
+}
+
+
+.game-details-img {
+    border-radius: 7px;
+    display: block;
+    margin: 0 auto;
+}
+
+.game-details-name {
+    text-align: center;
+}
+
+
+.search-btn, .signup-btn, .mylibrary-btn, .login-btn-nav, .username-btn, .logout-btn-nav {
+    margin-right: 1rem;
+}
+
+.inputs {
+    margin-bottom: 1rem;
+}
+
+.form-title {
+    margin-bottom: 1.5rem;
+}
+
+

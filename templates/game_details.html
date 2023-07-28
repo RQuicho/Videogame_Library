@@ -3,11 +3,44 @@
 {% block content %}
 
 
-<h1>{{game.name}}</h1>
+<h1 class="game-details-name">{{game.name}}</h1>
 
-<img src="{{game.background_image}}" alt="Image of {{game.name}}" width="800">
+<img class="game-details-img" src="{{game.background_image}}" alt="Image of {{game.name}}" width="800">
 
-<h4>Description</h4>
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle game-details-dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Add Game
+  </button>
+  <ul class="dropdown-menu" data-bs-theme="dark">
+    <li>
+      <form method="POST" action="{{url_for('all_games.add_all_game', game_id=game.id)}}">
+        <button class="dropdown-item" href="/">All Games</button>
+      </form>
+    </li>
+    <li>
+      <form method="POST" action="{{url_for('favorites.add_favorite', game_id=game.id)}}">
+        <button class="dropdown-item" href="/">Favorites</button>
+      </form>
+    </li>     
+    <li>
+      <form method="POST" action="{{url_for('played.add_played', game_id=game.id)}}">
+        <button class="dropdown-item" href="/">Played</button>
+      </form>
+    </li>    
+    <li>
+      <form method="POST" action="{{url_for('completed.add_completed', game_id=game.id)}}">
+        <button class="dropdown-item" href="/">Completed</button>
+      </form>
+    </li> 
+    <li>
+      <form method="POST" action="{{url_for('planned.add_planned', game_id=game.id)}}">
+        <button class="dropdown-item" href="/">Plan to Play</button>
+      </form>
+    </li>            
+  </ul>
+</div>
+
+<h4 class="game-details-description">Description</h4>
 <p>
   {% if game.description_raw %}
     {{game.description_raw}}
@@ -17,7 +50,7 @@
 </p>
 
 
-<h4>Game Series Count</h4>
+<h4 class="game-details-count">Game Series Count</h4>
 <p>
   {% if game.game_series_count %}
     {{game.game_series_count}}
@@ -26,7 +59,7 @@
   {% endif %}
 </p>
 
-<h4>Developers</h4>
+<h4 class="game-details-developers">Developers</h4>
 <p>
   {% if game.developers %}
     {% for dev in game.developers %}
@@ -37,7 +70,7 @@
   {% endif %}
 </p>
 
-<h4>Publishers</h4>
+<h4 class="game-details-publishers">Publishers</h4>
 <p>
   {% if game.publishers %}
     {% for publisher in game.publishers %}
@@ -48,7 +81,7 @@
   {% endif %}
 </p>
 
-<h4>Stores</h4>
+<h4 class="game-details-stores">Stores</h4>
 <p>
   {% if game.stores %}
     {% for store in game.stores %}
@@ -59,7 +92,7 @@
   {% endif %}
 </p>
 
-<h4>Genres</h4>
+<h4 class="game-details-genres">Genres</h4>
 <p>
   {% if game.genres %}
     {% for genre in game.genres %}
@@ -70,7 +103,7 @@
   {% endif %}
 </p>
   
-<h4>Platforms</h4>
+<h4 class="game-details-platforms">Platforms</h4>
 <p>
   {% if game.platforms %}
     {% for platform in game.platforms %}
@@ -81,7 +114,7 @@
   {% endif %}
 </p>
   
-<h4>Released:</h4>
+<h4 class="game-details-released">Released</h4>
 <p>
   {% if game.released %}
     {{game.released}}
@@ -90,7 +123,7 @@
   {% endif %}
 </p>
 
-<h4>ESRB Rating:</h4>
+<h4 class="game-details-rating">ESRB Rating</h4>
 <p>
   {% if game.esrb_rating %}
     {{game.esrb_rating.name}}

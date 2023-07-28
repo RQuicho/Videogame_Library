@@ -2,13 +2,13 @@
 
 {% block content %}
 
-<h1>Browse The Videogame Library!</h1>
+<h1 class="home-page-title">Browse The Videogame Library!</h1>
 
 <!-- Filter Platform Dropdown Menu -->
 <div class="filterDropdown">
   <div class="card-body">
     <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-secondary dropdown-toggle dropdown-platform-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         Platform
       </button>
       <ul class="dropdown-menu" data-bs-theme="dark">
@@ -60,17 +60,11 @@
             <input type="hidden" name="platform_id" value="8">
             <button type="submit" class="dropdown-item android" onclick="handlePlatformSelection(8)">Android</button>
           </form>
-        </li>
-        
-        
-                  
+        </li>    
       </ul>
     </div>
   </div>
 </div>
-
-
-
 
 
 
@@ -118,7 +112,7 @@
         </div>
         <div class="card-body">
           <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle dropdown-gamecard-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               Add Game
             </button>
             <ul class="dropdown-menu" data-bs-theme="dark">
@@ -149,7 +143,7 @@
               </li>            
             </ul>
           </div>
-          <a href="/games/{{game.id}}" class="card-link">See Details</a>
+          <a href="/games/{{game.id}}" class="card-link btn btn-secondary">See Details</a>
         </div>
       </div>
     </div>
