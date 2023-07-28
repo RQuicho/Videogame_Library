@@ -23,10 +23,46 @@ body {
     text-align: center;
 }
 
-
-.search-btn, .signup-btn, .mylibrary-btn, .login-btn-nav, .username-btn, .logout-btn-nav {
-    margin-right: 1rem;
+.game-details-info {
+    margin-bottom: 3rem;
 }
+
+.edit-btn, .signup-btn {
+    background-color: rgb(102, 178, 255);
+}
+
+.edit-btn:hover, .signup-btn:hover {
+    background-color: rgb(102, 102, 255);
+    color: white;
+}
+
+
+.search-btn {
+    margin-right: 1rem;
+    background-color: rgb(40, 40, 40);
+    color: white;
+    border: 1px solid rgb(255, 255, 153);
+}
+
+.search-btn:hover {
+    margin-right: 1rem;
+    background-color: rgb(255, 178, 102);
+    color: black;
+}
+
+.signup-btn-nav, .mylibrary-btn, .login-btn-nav, .username-btn, .logout-btn-nav, .cancel-btn {
+    margin-right: 1rem;
+    background-color: rgb(255, 255, 153);
+    color: black;
+}
+
+.signup-btn-nav:hover, .mylibrary-btn:hover, .login-btn-nav:hover, .username-btn:hover, .logout-btn-nav:hover, .cancel-btn:hover {
+    margin-right: 1rem;
+    background-color: rgb(255, 178, 102);
+    color: white;
+}
+
+
 
 .inputs {
     margin-bottom: 1rem;
@@ -35,5 +71,4 @@ body {
 .form-title {
     margin-bottom: 1.5rem;
 }
-
 

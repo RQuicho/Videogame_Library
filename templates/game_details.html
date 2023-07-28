@@ -41,7 +41,7 @@
 </div>
 
 <h4 class="game-details-description">Description</h4>
-<p>
+<p class="game-details-info">
   {% if game.description_raw %}
     {{game.description_raw}}
   {% else %}
@@ -49,88 +49,87 @@
   {% endif %}
 </p>
 
+<div class="row row-cols-1 row-cols-md-2">
+  <div class="col">
+    <h4 class="game-details-genres">Genres</h4>
+    <p class="game-details-info">
+      {% if game.genres %}
+        {% for genre in game.genres %}
+          {{genre.name}} |
+        {% endfor %}
+      {% else %}
+        N/A
+      {% endif %}
+    </p>
+    <h4 class="game-details-platforms">Platforms</h4>
+    <p class="game-details-info">
+      {% if game.platforms %}
+        {% for platform in game.platforms %}
+          {{platform.platform.name}} |
+        {% endfor %}
+      {% else %}
+        N/A
+      {% endif %}
+    </p>
+    <h4 class="game-details-released">Released</h4>
+    <p class="game-details-info">
+      {% if game.released %}
+        {{game.released}}
+      {% else %}
+        N/A
+      {% endif %}
+    </p>
+    <h4 class="game-details-rating">ESRB Rating</h4>
+    <p class="game-details-info">
+      {% if game.esrb_rating %}
+        {{game.esrb_rating.name}}
+      {% else %}
+        N/A
+      {% endif %}
+    </p>
+  </div>
+  <div class="col">
+    <h4 class="game-details-developers">Developers</h4>
+    <p class="game-details-info">
+      {% if game.developers %}
+        {% for dev in game.developers %}
+          {{dev.name}} |
+        {% endfor %}
+      {% else %}
+        N/A
+      {% endif %}
+    </p>
+    <h4 class="game-details-publishers">Publishers</h4>
+    <p class="game-details-info">
+      {% if game.publishers %}
+        {% for publisher in game.publishers %}
+          {{publisher.name}} |
+        {% endfor %}
+      {% else %}
+        N/A
+      {% endif %}
+    </p>
+    <h4 class="game-details-count">Game Series Count</h4>
+    <p class="game-details-info">
+      {% if game.game_series_count %}
+        {{game.game_series_count}}
+      {% else %}
+        N/A
+      {% endif %}
+    </p>
+    <h4 class="game-details-stores">Stores</h4>
+    <p class="game-details-info">
+      {% if game.stores %}
+        {% for store in game.stores %}
+          {{store.store.name}} |
+        {% endfor %}
+      {% else %}
+        N/A
+      {% endif %}
+    </p>
+  </div>
+</div>
 
-<h4 class="game-details-count">Game Series Count</h4>
-<p>
-  {% if game.game_series_count %}
-    {{game.game_series_count}}
-  {% else %}
-    N/A
-  {% endif %}
-</p>
-
-<h4 class="game-details-developers">Developers</h4>
-<p>
-  {% if game.developers %}
-    {% for dev in game.developers %}
-      {{dev.name}} |
-    {% endfor %}
-  {% else %}
-    N/A
-  {% endif %}
-</p>
-
-<h4 class="game-details-publishers">Publishers</h4>
-<p>
-  {% if game.publishers %}
-    {% for publisher in game.publishers %}
-      {{publisher.name}} |
-    {% endfor %}
-  {% else %}
-    N/A
-  {% endif %}
-</p>
-
-<h4 class="game-details-stores">Stores</h4>
-<p>
-  {% if game.stores %}
-    {% for store in game.stores %}
-      {{store.store.name}} |
-    {% endfor %}
-  {% else %}
-    N/A
-  {% endif %}
-</p>
-
-<h4 class="game-details-genres">Genres</h4>
-<p>
-  {% if game.genres %}
-    {% for genre in game.genres %}
-      {{genre.name}} |
-    {% endfor %}
-  {% else %}
-    N/A
-  {% endif %}
-</p>
-  
-<h4 class="game-details-platforms">Platforms</h4>
-<p>
-  {% if game.platforms %}
-    {% for platform in game.platforms %}
-      {{platform.platform.name}} |
-    {% endfor %}
-  {% else %}
-    N/A
-  {% endif %}
-</p>
-  
-<h4 class="game-details-released">Released</h4>
-<p>
-  {% if game.released %}
-    {{game.released}}
-  {% else %}
-    N/A
-  {% endif %}
-</p>
-
-<h4 class="game-details-rating">ESRB Rating</h4>
-<p>
-  {% if game.esrb_rating %}
-    {{game.esrb_rating.name}}
-  {% else %}
-    N/A
-  {% endif %}
-</p>
 
 
 {% endblock %}

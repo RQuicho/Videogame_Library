@@ -9,7 +9,7 @@
 </head>
 <body>
 
-  <nav class="navbar navbar-expand bg-dark border-bottom border-bottom-dark" data-bs-theme="dark"">
+  <nav class="navbar navbar-expand bg-dark border-bottom border-bottom-dark" data-bs-theme="dark">
     <div class="container-fluid">
       <div class="navbar-header">
         <a href="/" class="navbar-brand">VL</a>
@@ -17,15 +17,15 @@
       <ul class="nav navbar-nav navbar-right">
         <form class="d-flex" role="search">
           <input name='q' class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-warning search-btn" type="submit">Search</button>
+          <button class="btn search-btn" type="submit">Search</button>
         </form>
         {% if not g.user %}
-        <li><a class="btn btn-warning signup-btn" href="/signup">Sign up</a></li>
-        <li><a class="btn btn-warning login-btn-nav" href="/login">Log in</a></li>
+        <li><a class="btn signup-btn-nav" href="/signup">Sign up</a></li>
+        <li><a class="btn login-btn-nav" href="/login">Log in</a></li>
         {% else %}
-        <li><a class="btn btn-warning username-btn" href="/users/{{g.user.id}}">{{g.user.username}}</a></li>
-        <li><a class="btn btn-warning mylibrary-btn" href="/users/{{g.user.id}}/all_games">My Library</a></li>
-        <li><a class="btn btn-warning logout-btn-nav" href="/logout">Log out</a></li>
+        <li><a class="btn username-btn" href="/users/{{g.user.id}}">{{g.user.username}}</a></li>
+        <li><a class="btn mylibrary-btn" href="/users/{{g.user.id}}/all_games">My Library</a></li>
+        <li><a class="btn logout-btn-nav" href="/logout">Log out</a></li>
         {% endif %}
       </ul>
     </div>
