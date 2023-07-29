@@ -34,38 +34,38 @@ createGameCard = (game) => {
         </div>
         <div class="card-body">
           <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle dropdown-gamecard-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               Add Game
             </button>
             <ul class="dropdown-menu" data-bs-theme="dark">
               <li>
-                <form method="POST" action="{{url_for('all_games.add_all_game', game_id=game.id)}}">
+                <form method="POST" action="/all_games/${game.id}">
                   <button class="dropdown-item" href="/">All Games</button>
                 </form>
               </li>
               <li>
-                <form method="POST" action="{{url_for('favorites.add_favorite', game_id=game.id)}}">
+                <form method="POST" action="/favorites/${game.id}">
                   <button class="dropdown-item" href="/">Favorites</button>
                 </form>
               </li>     
               <li>
-                <form method="POST" action="{{url_for('played.add_played', game_id=game.id)}}">
+                <form method="POST" action="/played/${game.id}">
                   <button class="dropdown-item" href="/">Played</button>
                 </form>
               </li>    
               <li>
-                <form method="POST" action="{{url_for('completed.add_completed', game_id=game.id)}}">
+                <form method="POST" action="/completed/${game.id}">
                   <button class="dropdown-item" href="/">Completed</button>
                 </form>
               </li> 
               <li>
-                <form method="POST" action="{{url_for('planned.add_planned', game_id=game.id)}}">
+                <form method="POST" action="/planned/${game.id}">
                   <button class="dropdown-item" href="/">Plan to Play</button>
                 </form>
               </li>            
             </ul>
           </div>
-          <a href="/games/${game.id}" class="card-link">See Details</a>
+          <a href="/games/${game.id}" class="card-link btn btn-secondary">See Details</a>
         </div>
       </div>
     `;
