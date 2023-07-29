@@ -19,7 +19,7 @@ app = Flask(__name__)
 
 app.config.from_object("config")
 connect_db(app)
-debug = DebugToolbarExtension(app)
+# debug = DebugToolbarExtension(app)
 
 bcrypt = Bcrypt()
 

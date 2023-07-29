@@ -6,13 +6,13 @@ body {
     text-align: center;
 }
 
-
+/***** Game Card *****/
 .dropdown-gamecard-btn, .dropdown-platform-btn, .game-details-dropdown {
     margin: 1rem 0;
     background-color: rgb(102, 81, 122);
 }
 
-
+/***** Game Details *****/
 .game-details-img {
     border-radius: 7px;
     display: block;
@@ -28,6 +28,7 @@ body {
     margin-bottom: 3rem;
 }
 
+/***** Forms *****/
 .edit-btn, .signup-btn {
     background-color: rgb(102, 178, 255);
 }
@@ -37,7 +38,15 @@ body {
     color: white;
 }
 
+.inputs {
+    margin-bottom: 1rem;
+}
 
+.form-title {
+    margin-bottom: 1.5rem;
+}
+
+/***** Navbar *****/
 .search-btn {
     margin-right: 1rem;
     background-color: rgb(40, 40, 40);
@@ -52,17 +61,18 @@ body {
 }
 
 .signup-btn-nav, .mylibrary-btn, .login-btn-nav, .username-btn, .logout-btn-nav, .cancel-btn {
-    margin-right: 1rem;
+    margin-right: 0.5rem;
     background-color: rgb(255, 255, 153);
     color: black;
 }
 
 .signup-btn-nav:hover, .mylibrary-btn:hover, .login-btn-nav:hover, .username-btn:hover, .logout-btn-nav:hover, .cancel-btn:hover {
-    margin-right: 1rem;
+    margin-right: 0.5rem;
     background-color: rgb(255, 178, 102);
     color: white;
 }
 
+/***** Libraries *****/
 .active-library-tab {
     background-color: rgb(255, 255, 153);
     color: black;
@@ -77,15 +87,6 @@ body {
     color: black;
 }
 
-
-.inputs {
-    margin-bottom: 1rem;
-}
-
-.form-title {
-    margin-bottom: 1.5rem;
-}
-
 .delete-btn {
     margin-top: 1rem;
     background-color: rgb(255, 153, 153);
@@ -96,4 +97,41 @@ body {
     background-color: rgb(255, 51, 51);
     color: white;
 }
+
+
+/***** Hamburger Menu *****/
+@media (min-width: 768px) {
+    .full-navbar {
+        display: block;
+    }
+
+    .small-navbar {
+        display: none;
+    }
+}
+
+@media (max-width: 767px) {
+    .full-navbar {
+        display: none;
+    }
+
+    .small-navbar {
+        display: block;
+    }
+    
+    .signup-btn-nav, .mylibrary-btn, .login-btn-nav, .username-btn, .logout-btn-nav, .cancel-btn {
+        margin-right: 0.5rem;
+        margin-bottom: 1rem;
+        background-color: rgb(255, 255, 153);
+        color: black;
+    }
+    
+    .signup-btn-nav:hover, .mylibrary-btn:hover, .login-btn-nav:hover, .username-btn:hover, .logout-btn-nav:hover, .cancel-btn:hover {
+        margin-right: 0.5rem;
+        margin-bottom: 1rem;
+        background-color: rgb(255, 178, 102);
+        color: white;
+    }
+}
+
 
