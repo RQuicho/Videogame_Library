@@ -15,10 +15,20 @@
         <a href="/" class="navbar-brand">VL</a>
       </div>
       <ul class="nav navbar-nav navbar-right">
+
+        {% if 'platform_id' in request.form %}
+        <form class="d-flex" role="search" method="GET" action="{{url_for('show_games_by_platform')}}">
+          <input name='q' class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <input type="hidden" name="platform_id" value="{{request.form['platform_id']}}">
+          <button class="btn search-btn" type="submit">Search</button>
+        </form>
+        {% else %}
         <form class="d-flex" role="search">
           <input name='q' class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn search-btn" type="submit">Search</button>
         </form>
+        {% endif %}
+
         {% if not g.user %}
         <li><a class="btn signup-btn-nav" href="/signup">Sign up</a></li>
         <li><a class="btn login-btn-nav" href="/login">Log in</a></li>

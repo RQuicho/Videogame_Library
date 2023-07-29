@@ -53,17 +53,47 @@ def show_games():
 def show_games_by_platform():
     """Show all games with platform filter"""
 
-    platform_id = request.form['platform_id']
-    
-    if not platform_id:
-        response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}')
+    search = request.args.get('q')
+    platform_id = request.form.get('platform_id')
+    # platform_id = request.form['platform_id']
+
+    if platform_id:
+        if search:
+            response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}&parent_platforms={platform_id}&search={search}')
+        else:
+            response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}&parent_platforms={platform_id}')
     else:
-        response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}&parent_platforms={platform_id}')
+        response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}&search={search}')
+
     if response.status_code == 200:
         data = response.json()
         return render_template('show_entire_lib.html', response=data)
     else:
         return "Error: Failed to retrieve data from the API"
+
+
+    # if platform_id:
+    #     response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}&parent_platforms={platform_id}')
+    #     if response.status_code == 200:
+    #         data = response.json()
+    #         if search:
+    #             filtered_games = [game for game in data.results if search.lower() in game.name.lower()]
+    #             data.results = filtered_games
+    #             # response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}&parent_platforms={platform_id}&search={search}')     
+    #         return render_template('show_entire_lib.html', response=data)
+    #     else:
+    #         return "Error: Failed to retrieve data from the API"
+    # elif search:
+    #     response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}&search={search}')
+    #     if response.status_code == 200:
+    #         data = response.json()
+    #         return render_template('show_entire_lib.html', response=data)
+    #     else: return "Error: Failed to retrieve data from the API"
+    # else:
+    #     return "Please select a platform first, or return to the home page."
+
+
+
 
 
 

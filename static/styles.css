@@ -16,11 +16,12 @@ body {
 .game-details-img {
     border-radius: 7px;
     display: block;
-    margin: 0 auto;
+    margin: 0 auto 2rem;
 }
 
 .game-details-name {
     text-align: center;
+    margin: 2rem 0;
 }
 
 .game-details-info {
