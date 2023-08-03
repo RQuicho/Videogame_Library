@@ -5,8 +5,10 @@ from sqlalchemy.exc import IntegrityError
 from models import db, connect_db, User, Game, Category, GameCategory
 from forms import UserAddForm, UserEditForm, LoginForm
 from flask_bcrypt import Bcrypt
-from my_secrets import API_KEY
 from functions import add_game_to_db
+# from my_secrets import API_KEY
+import os
+API_KEY = os.environ.get('API_KEY')
 
 from admin.user import user
 from all_games.all_games import all_games
