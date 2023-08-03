@@ -72,31 +72,6 @@ def show_games_by_platform():
         return "Error: Failed to retrieve data from the API"
 
 
-    # if platform_id:
-    #     response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}&parent_platforms={platform_id}')
-    #     if response.status_code == 200:
-    #         data = response.json()
-    #         if search:
-    #             filtered_games = [game for game in data.results if search.lower() in game.name.lower()]
-    #             data.results = filtered_games
-    #             # response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}&parent_platforms={platform_id}&search={search}')     
-    #         return render_template('show_entire_lib.html', response=data)
-    #     else:
-    #         return "Error: Failed to retrieve data from the API"
-    # elif search:
-    #     response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}&search={search}')
-    #     if response.status_code == 200:
-    #         data = response.json()
-    #         return render_template('show_entire_lib.html', response=data)
-    #     else: return "Error: Failed to retrieve data from the API"
-    # else:
-    #     return "Please select a platform first, or return to the home page."
-
-
-
-
-
-
 #############################################################################################################################
 # Game Details routes
 
@@ -173,12 +148,5 @@ def get_api_key():
 
 
 
-
-
-
-
-
-
-    # https://api.rawg.io/api/games?key=25160d19f0744f488c544b98e663fd62&page=2
 
 

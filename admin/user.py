@@ -85,8 +85,7 @@ def show_user_details(user_id):
 
     user_id = g.user.id
     user = User.query.get_or_404(user_id)
-    # user = g.user
-
+ 
     form = UserEditForm(obj=user)
     if form.validate_on_submit():
         user.username = form.username.data

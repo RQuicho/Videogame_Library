@@ -14,8 +14,8 @@ class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.Text, nullable=False, unique=True)
-    email = db.Column(db.Text, nullable=False, unique=True)
+    username = db.Column(db.Text, nullable=False)
+    email = db.Column(db.Text, nullable=False)
     password = db.Column(db.Text, nullable=False)
     game_id = db.Column(db.Integer, db.ForeignKey('games.id', ondelete='cascade'))
 
@@ -71,7 +71,6 @@ class Game(db.Model):
     publisher = db.Column(db.JSON, default='N/A')
 
     users = db.relationship('User', backref='games')
-    # categories = db.relationship('Category', secondary='games_categories', backref='games')
 
     def __repr__(self):
         return f"<Game #{self.id}:, game_id: {self.game_id}, name: {self.name}>"

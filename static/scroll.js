@@ -5,13 +5,6 @@ fetch('/get_api_key')
   })
 .catch(error => console.log('Error fetching API key:', error));
 
-// isEndOfPage = () => {
-//     const endOfList = document.getElementById('end-of-list')
-//     const rect = endOfList.getBoundingClientRect() //gets position and size of element
-//     console.log('rect.top: ', rect.top)
-//     console.log('window.innerHeight: ', window.innerHeight)
-//     return rect.top <= window.innerHeight; //length from top to 'end-of-list' div is <= viewport height
-// }
 
 isEndOfPage = () => {
   return window.innerHeight + window.scrollY >= document.documentElement.scrollHeight;
