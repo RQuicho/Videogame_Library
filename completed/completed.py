@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from models import db, connect_db, User, Game, Category, GameCategory
 from forms import UserAddForm, UserEditForm, LoginForm
 from flask_bcrypt import Bcrypt
-from secrets import API_KEY
+from my_secrets import MY_APP_API_KEY
 from functions import add_game_to_db
 
 completed = Blueprint("completed", __name__, template_folder="templates")
@@ -43,7 +43,7 @@ def add_completed(game_id):
     add_game_to_db(game_id)
     
     # connect added game to correct user and Category table
-    response = requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}')
+    response = requests.get(f'https://api.rawg.io/api/games/{game_id}?key={MY_APP_API_KEY}')
     if response.status_code == 200:
         # connect added game to Category table
         new_game = Game.query.filter_by(game_id=game_id).first()

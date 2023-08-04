@@ -1,7 +1,7 @@
 from app import app
 from models import db, connect_db, User, Game, Category
 import requests
-from secrets import API_KEY
+from my_secrets import MY_APP_API_KEY
 
 
 def get_raw_data(url):

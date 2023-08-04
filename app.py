@@ -7,8 +7,9 @@ from forms import UserAddForm, UserEditForm, LoginForm
 from flask_bcrypt import Bcrypt
 from functions import add_game_to_db
 
-import os
-API_KEY = os.environ.get('API_KEY')
+from my_secrets import MY_APP_API_KEY
+# import os
+# MY_APP_API_KEY = os.environ.get('MY_APP_API_KEY')
 
 from admin.user import user
 from all_games.all_games import all_games
@@ -41,9 +42,9 @@ def show_games():
     search = request.args.get('q')
     
     if not search:
-        response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}')
+        response = requests.get(f'https://api.rawg.io/api/games?key={MY_APP_API_KEY}')
     else:
-        response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}&search={search}')
+        response = requests.get(f'https://api.rawg.io/api/games?key={MY_APP_API_KEY}&search={search}')
     if response.status_code == 200:
         data = response.json()
         return render_template('show_entire_lib.html', response=data)
@@ -61,11 +62,11 @@ def show_games_by_platform():
 
     if platform_id:
         if search:
-            response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}&parent_platforms={platform_id}&search={search}')
+            response = requests.get(f'https://api.rawg.io/api/games?key={MY_APP_API_KEY}&parent_platforms={platform_id}&search={search}')
         else:
-            response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}&parent_platforms={platform_id}')
+            response = requests.get(f'https://api.rawg.io/api/games?key={MY_APP_API_KEY}&parent_platforms={platform_id}')
     else:
-        response = requests.get(f'https://api.rawg.io/api/games?key={API_KEY}&search={search}')
+        response = requests.get(f'https://api.rawg.io/api/games?key={MY_APP_API_KEY}&search={search}')
 
     if response.status_code == 200:
         data = response.json()
@@ -81,7 +82,7 @@ def show_games_by_platform():
 def show_game_details(game_id):
     """Shows detail of one game"""
    
-    response = requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}')
+    response = requests.get(f'https://api.rawg.io/api/games/{game_id}?key={MY_APP_API_KEY}')
     
     if response.status_code == 200:
         data = response.json()
@@ -146,7 +147,7 @@ app.register_blueprint(planned, url_prefix="")
 
 @app.route('/get_api_key', methods=['GET'])
 def get_api_key():
-    return jsonify(api_key=API_KEY)
+    return jsonify(api_key=MY_APP_API_KEY)
 
 
 

@@ -5,10 +5,10 @@ from sqlalchemy.exc import IntegrityError
 from models import db, connect_db, User, Game, Category, GameCategory
 from forms import UserAddForm, UserEditForm, LoginForm
 from flask_bcrypt import Bcrypt
-from secrets import API_KEY
+from my_secrets import MY_APP_API_KEY
 
 def add_game_to_db(game_id):
-    response = requests.get(f'https://api.rawg.io/api/games/{game_id}?key={API_KEY}') 
+    response = requests.get(f'https://api.rawg.io/api/games/{game_id}?key={MY_APP_API_KEY}') 
     if response.status_code == 200:
         game = response.json()
         # game_id = game.id
