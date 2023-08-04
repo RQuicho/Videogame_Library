@@ -49,7 +49,7 @@ def show_games():
         data = response.json()
         return render_template('show_entire_lib.html', response=data)
     else:
-        return "Error: Failed to retrieve data from the API"
+        return f'Error: Failed to retrieve data from the API. Response code: {response.status_code}. MY_APP_API_KEY: {MY_APP_API_KEY}'
         
 
 @app.route('/platforms', methods=['GET', 'POST'])
