@@ -7,9 +7,9 @@ from forms import UserAddForm, UserEditForm, LoginForm
 from flask_bcrypt import Bcrypt
 from functions import add_game_to_db
 
-from my_secrets import MY_APP_API_KEY
-# import os
-# MY_APP_API_KEY = os.environ.get('MY_APP_API_KEY')
+# from my_secrets import MY_APP_API_KEY
+import os
+MY_APP_API_KEY = os.environ.get('MY_APP_API_KEY')
 
 from admin.user import user
 from all_games.all_games import all_games
