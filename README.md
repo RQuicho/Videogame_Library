@@ -1,6 +1,6 @@
 # Videogame_Library
 
-URL to be posted here via Render
+https://videogame-library.onrender.com
 
 This application uses the rawg api to retrieve information on videogames.
 You can organize games you have played, plan to play, favorites, etc.
